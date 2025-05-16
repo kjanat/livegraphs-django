@@ -1,0 +1,45 @@
+# EditorConfig is a standardized configuration file that helps define
+# consistent coding styles across different editors and IDEs
+# https://editorconfig.org/
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Python files
+[*.py]
+indent_size = 4
+
+# HTML and Django/Jinja2 template files
+[*.{html,htm}]
+indent_size = 2
+# Allow prettier to format Django/Jinja templates properly
+# The following comment options can be used in individual files if needed:
+# <!-- prettier-ignore -->
+# {# prettier-ignore #}
+
+# CSS, JavaScript, and JSON files
+[*.{css,scss,js,json}]
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+
+# YAML files
+[*.{yml,yaml}]
+indent_size = 2
+
+# Makefile (requires tabs)
+[Makefile]
+indent_style = tab
+
+# Docker-related files
+[{Dockerfile,docker-compose.yml}]
+indent_size = 2

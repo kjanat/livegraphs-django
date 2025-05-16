@@ -1,0 +1,49 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Static files collected by Django
+staticfiles/
+dashboard_project/staticfiles/
+
+# Media files
+media/
+dashboard_project/media/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database files
+*.sqlite3
+*.db
+
+# Django migration files
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Node modules (if you use npm/yarn for frontend)
+node_modules/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Log files
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Docker
+docker-compose.override.yml
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo

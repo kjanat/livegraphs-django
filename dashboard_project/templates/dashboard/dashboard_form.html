@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  {% if is_create %}Create Dashboard{% else %}Edit Dashboard{% endif %}
+  | Chat Analytics
+{% endblock %}
+
+{% block content %}
+  <div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+  >
+    <h1 class="h2">{% if is_create %}Create Dashboard{% else %}Edit Dashboard{% endif %}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            {% if is_create %}Create Dashboard{% else %}Edit Dashboard{% endif %}
+          </h5>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">
+                {% if is_create %}Create Dashboard{% else %}Update Dashboard{% endif %}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,312 @@
+<!-- templates/base.html -->
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Chat Analytics Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"
+    />
+
+    <!-- Plotly.js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/plotly.js@latest/dist/plotly.min.js"
+      charset="utf-8"
+    ></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+
+    {% block extra_css %}{% endblock %}
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark absolute-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">Chat Analytics</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+                href="{% url 'dashboard' %}"
+                >Dashboard</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
+                href="{% url 'upload_data' %}"
+                >Upload Data</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.resolver_match.url_name == 'search_chat_sessions' %}active{% endif %}"
+                href="{% url 'search_chat_sessions' %}"
+                >Search</a
+              >
+            </li>
+          </ul>
+
+          <div class="d-flex">
+            {% if user.is_authenticated %}
+              <div class="dropdown">
+                <button
+                  class="btn btn-outline-light dropdown-toggle"
+                  type="button"
+                  id="userDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {% if user.company %}
+                    <span class="badge bg-info me-1">{{ user.company.name }}</span>
+                  {% endif %}
+                  {{ user.username }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                  {% if user.is_staff %}
+                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
+                  {% endif %}
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+              </div>
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Login</a>
+              <a href="{% url 'register' %}" class="btn btn-light">Register</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <nav
+          id="sidebarMenu"
+          class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse sticky-top h-100 p-0"
+        >
+          <div class="sidebar-sticky pt-3">
+            {% block sidebar %}
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+                    href="{% url 'dashboard' %}"
+                  >
+                    <i class="fas fa-tachometer-alt me-2"></i>
+                    Dashboard
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
+                    href="{% url 'upload_data' %}"
+                  >
+                    <i class="fas fa-upload me-2"></i>
+                    Upload Data
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.resolver_match.url_name == 'search_chat_sessions' %}active{% endif %}"
+                    href="{% url 'search_chat_sessions' %}"
+                  >
+                    <i class="fas fa-search me-2"></i>
+                    Search
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.resolver_match.url_name == 'data_view' %}active{% endif %}"
+                    href="{% url 'data_view' %}"
+                  >
+                    <i class="fas fa-table me-2"></i>
+                    Data View
+                  </a>
+                </li>
+                {% if user.is_authenticated and user.company %}
+                  {% if dashboards %}
+                    <li class="nav-header"><strong>Dashboards</strong></li>
+                    {% for dashboard in dashboards %}
+                      <li class="nav-item">
+                        <a
+                          class="nav-link {% if selected_dashboard.id == dashboard.id %}active{% endif %}"
+                          href="{% url 'dashboard' %}?dashboard_id={{ dashboard.id }}"
+                        >
+                          <i class="fas fa-chart-line me-2"></i>
+                          {{ dashboard.name }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'create_dashboard' %}">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        New Dashboard
+                      </a>
+                    </li>
+                  {% endif %}
+                  {% if data_sources %}
+                    <li class="nav-header"><strong>Data Sources</strong></li>
+                    {% for data_source in data_sources %}
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'data_source_detail' data_source.id %}">
+                          <i class="fas fa-database me-2"></i>
+                          {{ data_source.name }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  {% endif %}
+                {% endif %}
+              </ul>
+            {% endblock %}
+          </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+          {# {% if messages %} #}
+          {# <div class="messages mt-3"> #}
+          {# {% for message in messages %} #}
+          {# <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert"> #}
+          {# {{ message }} #}
+          {# <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> #}
+          {# </div> #}
+          {# {% endfor %} #}
+          {# </div> #}
+          {# {% endif %} #}
+
+          {% block content %}
+          {% endblock %}
+        </main>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <p>&copy; {% now "Y" %} Chat Analytics Dashboard. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery (for Ajax) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    {% block extra_js %}
+      {{ block.super }}
+      {% if messages %}
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+          <!-- Toasts will be appended here -->
+        </div>
+
+        {% for message in messages %}
+          <!-- Pre-render message data that will be used by JavaScript -->
+          <script type="application/json" id="message-data-{{ forloop.counter }}">
+            {
+              "message": "{{ message|escapejs }}",
+              "tags": "{{ message.tags|default:'' }}"
+            }
+          </script>
+        {% endfor %}
+
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const toastContainer = document.querySelector(".toast-container");
+            if (!toastContainer) return;
+
+            // Find all message data elements
+            const messageDataElements = document.querySelectorAll('script[id^="message-data-"]');
+            messageDataElements.forEach(function (dataElement) {
+              try {
+                const messageData = JSON.parse(dataElement.textContent);
+                createToast(messageData.message, messageData.tags);
+              } catch (e) {
+                console.error("Error parsing message data:", e);
+              }
+            });
+
+            function createToast(messageText, messageTags) {
+              let toastClass = "";
+              let autohide = true;
+              let delay = 5000;
+
+              if (messageTags.includes("debug")) {
+                toastClass = "bg-secondary text-white";
+              } else if (messageTags.includes("info")) {
+                toastClass = "bg-info text-dark";
+              } else if (messageTags.includes("success")) {
+                toastClass = "bg-success text-white";
+              } else if (messageTags.includes("warning")) {
+                toastClass = "bg-warning text-dark";
+                autohide = false;
+              } else if (messageTags.includes("error")) {
+                toastClass = "bg-danger text-white";
+                autohide = false;
+              } else {
+                toastClass = "bg-light text-dark";
+              }
+
+              const toastId =
+                "toast-" + Date.now() + "-" + Math.random().toString(36).substring(2, 11);
+              const toastHtml = `
+                    <div id="${toastId}" class="toast ${toastClass}" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto">Notification</strong>
+                            <small class="${toastClass.includes("text-white") ? "" : "text-muted"} me-2">Just now</small>
+                            <button type="button" class="btn-close ${toastClass.includes("text-white") ? "btn-close-white" : ""}" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            ${messageText}
+                        </div>
+                    </div>`;
+
+              toastContainer.insertAdjacentHTML("beforeend", toastHtml);
+
+              const toastElement = document.getElementById(toastId);
+              if (toastElement) {
+                const toast = new bootstrap.Toast(toastElement, {
+                  autohide: autohide,
+                  delay: autohide ? delay : undefined,
+                });
+
+                toastElement.addEventListener("hidden.bs.toast", function () {
+                  toastElement.remove();
+                });
+
+                toast.show();
+              }
+            }
+          });
+        </script>
+      {% endif %}
+    {% endblock %}
+  </body>
+</html>

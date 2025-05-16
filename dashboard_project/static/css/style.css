@@ -1,0 +1,328 @@
+/**
+ * style.css - Global styles for the application
+ */
+
+/* General Styles */
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: #f4f7f9;
+  /* Lighter, cleaner background */
+  color: #333;
+  /* Darker text for better contrast */
+  line-height: 1.6;
+  display: flex;
+  /* Added for sticky footer */
+  flex-direction: column;
+  /* Added for sticky footer */
+  min-height: 100vh;
+  /* Ensures body takes at least full viewport height */
+}
+
+/* Navbar adjustments (if needed, Bootstrap usually handles this well) */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Subtle shadow for depth */
+}
+
+/* Helper Classes */
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.min-w-150 {
+  min-width: 150px;
+}
+
+/* Card styles */
+.card {
+  border: 1px solid #e0e5e9;
+  /* Lighter border */
+  border-radius: 0.5rem;
+  /* Slightly more rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  /* Softer, more modern shadow */
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+  margin-bottom: 1.5rem;
+  /* Consistent margin */
+}
+
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #ffffff;
+  /* Clean white header */
+  border-bottom: 1px solid #e0e5e9;
+  font-weight: 500;
+  /* Slightly bolder header text */
+  padding: 0.75rem 1.25rem;
+}
+
+.card-title {
+  font-size: 1.15rem;
+  /* Adjusted card title size */
+  font-weight: 600;
+}
+
+/* Sidebar enhancements */
+.sidebar {
+  background-color: #ffffff;
+  /* White sidebar for a cleaner look */
+  border-right: 1px solid #e0e5e9;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s;
+}
+
+.sidebar-sticky {
+  padding-top: 1rem;
+}
+
+.sidebar .nav-link {
+  color: #4a5568;
+  /* Softer link color */
+  padding: 0.65rem 1.25rem;
+  /* Adjusted padding */
+  border-radius: 0.375rem;
+  /* Bootstrap-like rounded corners for links */
+  margin: 0.1rem 0.5rem;
+  /* Margin around links */
+  font-weight: 500;
+}
+
+.sidebar .nav-link:hover {
+  color: #007bff;
+  /* Primary color on hover */
+  background-color: #e9f2ff;
+  /* Light blue background on hover */
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+  background-color: #d6e4ff;
+  /* Slightly darker blue for active */
+  font-weight: 600;
+}
+
+.sidebar .nav-link i.me-2 {
+  width: 20px;
+  /* Ensure icons align well */
+  text-align: center;
+  margin-right: 0.75rem !important;
+  /* Consistent icon spacing */
+}
+
+.sidebar .nav-header {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #718096;
+  /* Softer header color */
+  padding: 0.5rem 1.25rem;
+  margin-top: 1rem;
+}
+
+/* Dashboard stats cards */
+.stats-card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.stats-card h3 {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.stats-card p {
+  font-size: 0.875rem;
+  margin-bottom: 0;
+  opacity: 0.8;
+}
+
+/* Chart containers */
+.chart-container {
+  width: 100%;
+  height: 300px;
+  position: relative;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Table enhancements */
+.table {
+  border-color: #e0e5e9;
+}
+
+.table th {
+  font-weight: 600;
+  /* Bolder table headers */
+  color: #4a5568;
+  background-color: #f8f9fc;
+  /* Light background for headers */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.02);
+  /* Very subtle striping */
+}
+
+.table-hover tbody tr:hover {
+  background-color: #e9f2ff;
+  /* Consistent hover with sidebar */
+}
+
+/* Form improvements */
+.form-control,
+.form-select {
+  border-color: #ced4da;
+  border-radius: 0.375rem;
+  /* Consistent border radius */
+  padding: 0.5rem 0.75rem;
+  /* Adjusted padding */
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #86b7fe;
+  /* Bootstrap focus color */
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  /* Bootstrap focus shadow */
+}
+
+/* Button styling */
+.btn {
+  border-radius: 0.375rem;
+  /* Consistent border radius */
+  padding: 0.5rem 1rem;
+  /* Standard button padding */
+  font-weight: 500;
+  transition:
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+/* Alert styling */
+.alert {
+  border-radius: 0.375rem;
+  padding: 0.9rem 1.25rem;
+}
+
+/* Chat transcript styling */
+.chat-transcript {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+  font-size: 0.875rem;
+}
+
+.chat-transcript pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  margin-bottom: 0;
+}
+
+/* Footer styling */
+footer {
+  background-color: #ffffff;
+  /* White footer */
+  border-top: 1px solid #e0e5e9;
+  padding: 1.5rem 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: auto;
+  /* Added for sticky footer */
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .stats-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .sidebar,
+  .navbar,
+  .btn,
+  footer {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  .card {
+    break-inside: avoid;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .chart-container {
+    break-inside: avoid;
+    height: auto !important;
+  }
+}
