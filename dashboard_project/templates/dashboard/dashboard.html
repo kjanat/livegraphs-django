@@ -147,139 +147,161 @@
 {% endblock %}
 
 {% block extra_js %}
+  <!-- prettier-ignore-start -->
+  <!-- Store the JSON data in script tags to avoid parsing issues -->
+  <script type="application/json" id="time-series-data">{{ time_series_data_json|safe }}</script>
+  <script type="application/json" id="sentiment-data">{{ sentiment_data_json|safe }}</script>
+  <script type="application/json" id="country-data">{{ country_data_json|safe }}</script>
+  <script type="application/json" id="category-data">{{ category_data_json|safe }}</script>
+  <!-- prettier-ignore-end -->
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Parse the dashboard data from JSON
-      const dashboardData = JSON.parse("{{ dashboard_data_json|safe }}");
+      try {
+        // Parse the dashboard data components from script tags
+        const timeSeriesData = JSON.parse(document.getElementById("time-series-data").textContent);
+        const sentimentData = JSON.parse(document.getElementById("sentiment-data").textContent);
+        const countryData = JSON.parse(document.getElementById("country-data").textContent);
+        const categoryData = JSON.parse(document.getElementById("category-data").textContent);
 
-      // Sessions over time chart
-      const timeSeriesData = dashboardData.time_series_data;
-      const timeSeriesX = timeSeriesData.map((item) => item.date);
-      const timeSeriesY = timeSeriesData.map((item) => item.count);
+        console.log("Time series data loaded:", timeSeriesData);
+        console.log("Sentiment data loaded:", sentimentData);
+        console.log("Country data loaded:", countryData);
+        console.log("Category data loaded:", categoryData);
 
-      Plotly.newPlot(
-        "sessions-time-chart",
-        [
-          {
-            x: timeSeriesX,
-            y: timeSeriesY,
-            type: "scatter",
-            mode: "lines+markers",
-            line: {
-              color: "rgb(75, 192, 192)",
-              width: 2,
-            },
-            marker: {
-              color: "rgb(75, 192, 192)",
-              size: 6,
-            },
-          },
-        ],
-        {
-          margin: { t: 10, r: 10, b: 40, l: 40 },
-          xaxis: {
-            title: "Date",
-          },
-          yaxis: {
-            title: "Number of Sessions",
-          },
+        // Sessions over time chart
+        if (timeSeriesData && timeSeriesData.length > 0) {
+          const timeSeriesX = timeSeriesData.map((item) => item.date);
+          const timeSeriesY = timeSeriesData.map((item) => item.count);
+
+          Plotly.newPlot(
+            "sessions-time-chart",
+            [
+              {
+                x: timeSeriesX,
+                y: timeSeriesY,
+                type: "scatter",
+                mode: "lines+markers",
+                line: {
+                  color: "rgb(75, 192, 192)",
+                  width: 2,
+                },
+                marker: {
+                  color: "rgb(75, 192, 192)",
+                  size: 6,
+                },
+              },
+            ],
+            {
+              margin: { t: 10, r: 10, b: 40, l: 40 },
+              xaxis: {
+                title: "Date",
+              },
+              yaxis: {
+                title: "Number of Sessions",
+              },
+            }
+          );
+        } else {
+          document.getElementById("sessions-time-chart").innerHTML =
+            '<div class="text-center py-5"><p class="text-muted">No time series data available</p></div>';
         }
-      );
 
-      // Sentiment analysis chart
-      const sentimentData = dashboardData.sentiment_data;
+        // Sentiment analysis chart
+        if (sentimentData && sentimentData.length > 0) {
+          const sentimentLabels = sentimentData.map((item) => item.sentiment);
+          const sentimentValues = sentimentData.map((item) => item.count);
+          const sentimentColors = sentimentLabels.map((sentiment) => {
+            if (sentiment.toLowerCase().includes("positive")) return "rgb(75, 192, 92)";
+            if (sentiment.toLowerCase().includes("negative")) return "rgb(255, 99, 132)";
+            if (sentiment.toLowerCase().includes("neutral")) return "rgb(255, 205, 86)";
+            return "rgb(201, 203, 207)";
+          });
 
-      if (sentimentData.length > 0) {
-        const sentimentLabels = sentimentData.map((item) => item.sentiment);
-        const sentimentValues = sentimentData.map((item) => item.count);
-        const sentimentColors = sentimentLabels.map((sentiment) => {
-          if (sentiment.toLowerCase().includes("positive")) return "rgb(75, 192, 92)";
-          if (sentiment.toLowerCase().includes("negative")) return "rgb(255, 99, 132)";
-          if (sentiment.toLowerCase().includes("neutral")) return "rgb(255, 205, 86)";
-          return "rgb(201, 203, 207)";
+          Plotly.newPlot(
+            "sentiment-chart",
+            [
+              {
+                values: sentimentValues,
+                labels: sentimentLabels,
+                type: "pie",
+                marker: {
+                  colors: sentimentColors,
+                },
+                hole: 0.4,
+                textinfo: "label+percent",
+                insidetextorientation: "radial",
+              },
+            ],
+            {
+              margin: { t: 10, r: 10, b: 10, l: 10 },
+            }
+          );
+        } else {
+          document.getElementById("sentiment-chart").innerHTML =
+            '<div class="text-center py-5"><p class="text-muted">No sentiment data available</p></div>';
+        }
+
+        // Country chart
+        if (countryData && countryData.length > 0) {
+          const countryLabels = countryData.map((item) => item.country);
+          const countryValues = countryData.map((item) => item.count);
+
+          Plotly.newPlot(
+            "country-chart",
+            [
+              {
+                x: countryValues,
+                y: countryLabels,
+                type: "bar",
+                orientation: "h",
+                marker: {
+                  color: "rgb(54, 162, 235)",
+                },
+              },
+            ],
+            {
+              margin: { t: 10, r: 10, b: 40, l: 100 },
+              xaxis: {
+                title: "Number of Sessions",
+              },
+            }
+          );
+        } else {
+          document.getElementById("country-chart").innerHTML =
+            '<div class="text-center py-5"><p class="text-muted">No country data available</p></div>';
+        }
+
+        // Category chart
+        if (categoryData && categoryData.length > 0) {
+          const categoryLabels = categoryData.map((item) => item.category);
+          const categoryValues = categoryData.map((item) => item.count);
+
+          Plotly.newPlot(
+            "category-chart",
+            [
+              {
+                labels: categoryLabels,
+                values: categoryValues,
+                type: "pie",
+                textinfo: "label+percent",
+                insidetextorientation: "radial",
+              },
+            ],
+            {
+              margin: { t: 10, r: 10, b: 10, l: 10 },
+            }
+          );
+        } else {
+          document.getElementById("category-chart").innerHTML =
+            '<div class="text-center py-5"><p class="text-muted">No category data available</p></div>';
+        }
+      } catch (error) {
+        console.error("Error rendering charts:", error);
+        document.querySelectorAll(".chart-container").forEach((container) => {
+          container.innerHTML =
+            '<div class="text-center py-5"><p class="text-danger">Error loading chart data. Please refresh the page.</p></div>';
         });
-
-        Plotly.newPlot(
-          "sentiment-chart",
-          [
-            {
-              values: sentimentValues,
-              labels: sentimentLabels,
-              type: "pie",
-              marker: {
-                colors: sentimentColors,
-              },
-              hole: 0.4,
-              textinfo: "label+percent",
-              insidetextorientation: "radial",
-            },
-          ],
-          {
-            margin: { t: 10, r: 10, b: 10, l: 10 },
-          }
-        );
-      } else {
-        document.getElementById("sentiment-chart").innerHTML =
-          '<div class="text-center py-5"><p class="text-muted">No sentiment data available</p></div>';
-      }
-
-      // Country chart
-      const countryData = dashboardData.country_data;
-
-      if (countryData.length > 0) {
-        const countryLabels = countryData.map((item) => item.country);
-        const countryValues = countryData.map((item) => item.count);
-
-        Plotly.newPlot(
-          "country-chart",
-          [
-            {
-              x: countryValues,
-              y: countryLabels,
-              type: "bar",
-              orientation: "h",
-              marker: {
-                color: "rgb(54, 162, 235)",
-              },
-            },
-          ],
-          {
-            margin: { t: 10, r: 10, b: 40, l: 100 },
-            xaxis: {
-              title: "Number of Sessions",
-            },
-          }
-        );
-      } else {
-        document.getElementById("country-chart").innerHTML =
-          '<div class="text-center py-5"><p class="text-muted">No country data available</p></div>';
-      }
-
-      // Category chart
-      const categoryData = dashboardData.category_data;
-
-      if (categoryData.length > 0) {
-        const categoryLabels = categoryData.map((item) => item.category);
-        const categoryValues = categoryData.map((item) => item.count);
-
-        Plotly.newPlot(
-          "category-chart",
-          [
-            {
-              labels: categoryLabels,
-              values: categoryValues,
-              type: "pie",
-              textinfo: "label+percent",
-              insidetextorientation: "radial",
-            },
-          ],
-          {
-            margin: { t: 10, r: 10, b: 10, l: 10 },
-          }
-        );
-      } else {
-        document.getElementById("category-chart").innerHTML =
-          '<div class="text-center py-5"><p class="text-muted">No category data available</p></div>';
       }
     });
   </script>

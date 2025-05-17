@@ -260,3 +260,21 @@
     font-size: 1.5rem;
   }
 }
+
+/* --- Stat Boxes Alignment Fix (Bottom Align, No Overlap) --- */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+.stats-card {
+  flex: 1 1 0;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Push content to bottom */
+  align-items: flex-start;
+  box-sizing: border-box;
+  /* Remove min-height/height for natural stretch */
+}

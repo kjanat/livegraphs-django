@@ -3,16 +3,19 @@
 ## Core Features Implemented
 
 1. **Multi-Tenant Architecture**:
+
    - Companies have isolated data and user access
    - Users belong to specific companies
    - Role-based permissions (admin, company admin, regular user)
 
 2. **Data Management**:
+
    - CSV file upload and processing
    - Data source management
    - Chat session records with comprehensive metadata
 
 3. **Dashboard Visualization**:
+
    - Interactive charts using Plotly.js
    - Key metrics and KPIs
    - Time-series analysis
@@ -21,18 +24,21 @@
    - Category distribution
 
 4. **Search and Analysis**:
+
    - Full-text search across chat sessions
    - Filtering by various attributes
    - Detailed view of individual chat sessions
    - Transcript viewing
 
 5. **User Management**:
+
    - User registration and authentication
    - Profile management
    - Password change functionality
    - Role assignment
 
 6. **Admin Interface**:
+
    - Company management
    - User administration
    - Data source oversight
@@ -67,6 +73,7 @@
 ### Data Flow
 
 1. **Upload Process**:
+
    - File validation
    - CSV parsing
    - Data normalization
@@ -74,6 +81,7 @@
    - Association with company
 
 2. **Dashboard Generation**:
+
    - Data aggregation
    - Statistical calculations
    - Chart data preparation

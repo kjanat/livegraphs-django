@@ -9,11 +9,17 @@ from django.core.paginator import Paginator
 from django.db.models import Avg, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.utils import timezone
 
 from .forms import DashboardForm, DataSourceUploadForm
 from .models import ChatSession, Dashboard, DataSource
 from .utils import generate_dashboard_data, process_csv_file
+
+
+def is_ajax_navigation(request):
+    """Check if this is an AJAX navigation request"""
+    return request.headers.get("X-AJAX-Navigation") == "true"
 
 
 @login_required
@@ -57,22 +63,26 @@ def dashboard_view(request):
     # Generate dashboard data
     dashboard_data = generate_dashboard_data(selected_dashboard.data_sources.all())
 
-    # Convert dashboard data to JSON for use in JavaScript
-    dashboard_data_json = json.dumps(
-        {
-            "sentiment_data": dashboard_data["sentiment_data"],
-            "country_data": dashboard_data["country_data"],
-            "category_data": dashboard_data["category_data"],
-            "time_series_data": dashboard_data["time_series_data"],
-        }
-    )
+    # Convert each component of dashboard data to JSON
+    sentiment_data_json = json.dumps(dashboard_data["sentiment_data"])
+    country_data_json = json.dumps(dashboard_data["country_data"])
+    category_data_json = json.dumps(dashboard_data["category_data"])
+    time_series_data_json = json.dumps(dashboard_data["time_series_data"])
 
     context = {
         "dashboards": dashboards,
         "selected_dashboard": selected_dashboard,
         "dashboard_data": dashboard_data,
-        "dashboard_data_json": dashboard_data_json,
+        "sentiment_data_json": sentiment_data_json,
+        "country_data_json": country_data_json,
+        "category_data_json": category_data_json,
+        "time_series_data_json": time_series_data_json,
     }
+
+    # Check if this is an AJAX navigation request
+    if is_ajax_navigation(request):
+        html_content = render_to_string("dashboard/dashboard.html", context, request=request)
+        return JsonResponse({"html": html_content, "title": "Dashboard | Chat Analytics"})
 
     return render(request, "dashboard/dashboard.html", context)
 
@@ -124,6 +134,11 @@ def upload_data_view(request):
         "data_sources": data_sources,
     }
 
+    # Check if this is an AJAX navigation request
+    if is_ajax_navigation(request):
+        html_content = render_to_string("dashboard/upload.html", context, request=request)
+        return JsonResponse({"html": html_content, "title": "Upload Data | Chat Analytics"})
+
     return render(request, "dashboard/upload.html", context)
 
 
@@ -155,6 +170,11 @@ def data_source_detail_view(request, data_source_id):
         "page_obj": page_obj,
     }
 
+    # Check if this is an AJAX navigation request
+    if is_ajax_navigation(request):
+        html_content = render_to_string("dashboard/data_source_detail.html", context, request=request)
+        return JsonResponse({"html": html_content, "title": f"{data_source.name} | Chat Analytics"})
+
     return render(request, "dashboard/data_source_detail.html", context)
 
 
@@ -176,6 +196,11 @@ def chat_session_detail_view(request, session_id):
     context = {
         "session": chat_session,
     }
+
+    # Check if this is an AJAX navigation request
+    if is_ajax_navigation(request):
+        html_content = render_to_string("dashboard/chat_session_detail.html", context, request=request)
+        return JsonResponse({"html": html_content, "title": f"Chat Session {session_id} | Chat Analytics"})
 
     return render(request, "dashboard/chat_session_detail.html", context)
 
@@ -208,6 +233,11 @@ def create_dashboard_view(request):
         "form": form,
         "is_create": True,
     }
+
+    # Check if this is an AJAX navigation request
+    if is_ajax_navigation(request):
+        html_content = render_to_string("dashboard/dashboard_form.html", context, request=request)
+        return JsonResponse({"html": html_content, "title": "Create Dashboard | Chat Analytics"})
 
     return render(request, "dashboard/dashboard_form.html", context)
 
@@ -243,6 +273,11 @@ def edit_dashboard_view(request, dashboard_id):
         "dashboard": dashboard,
         "is_create": False,
     }
+
+    # Check if this is an AJAX navigation request
+    if is_ajax_navigation(request):
+        html_content = render_to_string("dashboard/dashboard_form.html", context, request=request)
+        return JsonResponse({"html": html_content, "title": f"Edit Dashboard: {dashboard.name} | Chat Analytics"})
 
     return render(request, "dashboard/dashboard_form.html", context)
 
@@ -313,8 +348,33 @@ def dashboard_data_api(request, dashboard_id):
     if not company:
         return JsonResponse({"error": "User not associated with a company"}, status=403)
 
+    # Get time range filter if provided
+    time_range = request.GET.get("time_range", "all")
+
     dashboard = get_object_or_404(Dashboard, id=dashboard_id, company=company)
-    dashboard_data = generate_dashboard_data(dashboard.data_sources.all())
+
+    # Get data sources for this dashboard
+    data_sources = dashboard.data_sources.all()
+
+    # Apply time filter if needed
+    filtered_data_sources = data_sources
+    if time_range and time_range != "all":
+        # This is a placeholder comment - implement time filtering in a real app
+        # You would filter ChatSessions based on time_range here
+        pass
+
+    # Generate the dashboard data
+    dashboard_data = generate_dashboard_data(filtered_data_sources)
+
+    # Ensure values are JSON serializable
+    for key in ["sentiment_data", "country_data", "category_data"]:
+        dashboard_data[key] = list(dashboard_data[key])
+
+    # Format time series data for proper date serialization
+    if "time_series_data" in dashboard_data:
+        for item in dashboard_data["time_series_data"]:
+            if "date" in item and not isinstance(item["date"], str):
+                item["date"] = item["date"].strftime("%Y-%m-%d")
 
     return JsonResponse(dashboard_data)
 
@@ -372,6 +432,34 @@ def search_chat_sessions(request):
         "page_obj": page_obj,
         "data_source": data_source,
     }
+
+    # Check if this is an AJAX navigation request
+    if is_ajax_navigation(request):
+        html_content = render_to_string("dashboard/search_results.html", context, request=request)
+        return JsonResponse({"html": html_content, "title": "Search Chat Sessions | Chat Analytics"})
+
+    # Check if this is an AJAX pagination request
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return JsonResponse(
+            {
+                "status": "success",
+                "html_data": render(request, "dashboard/partials/search_results_table.html", context).content.decode(
+                    "utf-8"
+                ),
+                "page_obj": {
+                    "number": page_obj.number,
+                    "has_previous": page_obj.has_previous(),
+                    "has_next": page_obj.has_next(),
+                    "previous_page_number": page_obj.previous_page_number() if page_obj.has_previous() else None,
+                    "next_page_number": page_obj.next_page_number() if page_obj.has_next() else None,
+                    "paginator": {
+                        "num_pages": page_obj.paginator.num_pages,
+                        "count": page_obj.paginator.count,
+                    },
+                },
+                "query": query,
+            }
+        )
 
     return render(request, "dashboard/search_results.html", context)
 
@@ -448,5 +536,34 @@ def data_view(request):
         "avg_messages": avg_messages,
         "escalation_rate": escalation_rate,
     }
+
+    # Check if this is an AJAX navigation request
+    if is_ajax_navigation(request):
+        html_content = render_to_string("dashboard/data_view.html", context, request=request)
+        return JsonResponse({"html": html_content, "title": "Data View | Chat Analytics"})
+
+    # Check if this is an AJAX pagination request
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return JsonResponse(
+            {
+                "status": "success",
+                "html_data": render(request, "dashboard/partials/data_table.html", context).content.decode("utf-8"),
+                "page_obj": {
+                    "number": page_obj.number,
+                    "has_previous": page_obj.has_previous(),
+                    "has_next": page_obj.has_next(),
+                    "previous_page_number": page_obj.previous_page_number() if page_obj.has_previous() else None,
+                    "next_page_number": page_obj.next_page_number() if page_obj.has_next() else None,
+                    "paginator": {
+                        "num_pages": page_obj.paginator.num_pages,
+                        "count": page_obj.paginator.count,
+                    },
+                },
+                "view": view,
+                "avg_response_time": avg_response_time,
+                "avg_messages": avg_messages,
+                "escalation_rate": escalation_rate,
+            }
+        )
 
     return render(request, "dashboard/data_view.html", context)

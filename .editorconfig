@@ -26,7 +26,7 @@ indent_size = 2
 
 # CSS, JavaScript, and JSON files
 [*.{css,scss,js,json}]
-indent_size = 2
+indent_size = 4
 
 # Markdown files
 [*.md]

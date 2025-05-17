@@ -1,6 +1,6 @@
 # docker-compose.yml
 
-version: '3.8'
+version: "3.8"
 
 services:
   web:
@@ -11,7 +11,7 @@ services:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
     ports:
-      - '8000:8000'
+      - "8000:8000"
     environment:
       - DEBUG=0
       - SECRET_KEY=your_secret_key_here
@@ -31,7 +31,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - '80:80'
+      - "80:80"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - static_volume:/app/staticfiles

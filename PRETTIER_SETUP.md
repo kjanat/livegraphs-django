@@ -55,10 +55,7 @@ If you need to prevent Prettier from formatting a section of your template:
 
 ```html
 {# prettier-ignore #}
-<div>
-    This section will not be formatted
-    by Prettier.
-</div>
+<div>This section will not be formatted by Prettier.</div>
 
 <!-- prettier-ignore -->
 <div>

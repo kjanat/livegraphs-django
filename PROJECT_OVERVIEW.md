@@ -70,10 +70,12 @@ This will create:
 ## Usage Flow
 
 1. **Admin Setup**:
+
    - Admin creates companies
    - Admin creates users and assigns them to companies
 
 2. **Company Admin**:
+
    - Uploads CSV files with chat data
    - Creates and configures dashboards
    - Manages company users

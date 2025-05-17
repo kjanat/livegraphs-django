@@ -32,7 +32,7 @@ A Django application that creates an analytics dashboard for chat session data. 
 
 2. Create a virtual environment and activate it:
 
-    ```sh
+   ```sh
    uv venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
@@ -99,23 +99,25 @@ A Django application that creates an analytics dashboard for chat session data. 
 
 The CSV file should contain the following columns:
 
-- session_id: Unique identifier for the chat session
-- start_time: When the session started (datetime)
-- end_time: When the session ended (datetime)
-- ip_address: IP address of the user
-- country: Country of the user
-- language: Language used in the conversation
-- messages_sent: Number of messages in the conversation (integer)
-- sentiment: Sentiment analysis of the conversation (string)
-- escalated: Whether the conversation was escalated (boolean)
-- forwarded_hr: Whether the conversation was forwarded to HR (boolean)
-- full_transcript: Full transcript of the conversation (text)
-- avg_response_time: Average response time in seconds (float)
-- tokens: Total number of tokens used (integer)
-- tokens_eur: Cost of tokens in EUR (float)
-- category: Category of the conversation (string)
-- initial_msg: First message from the user (text)
-- user_rating: User rating of the conversation (string)
+| Column              | Description                                            |
+| ------------------- | ------------------------------------------------------ |
+| `session_id`        | Unique identifier for the chat session                 |
+| `start_time`        | When the session started (datetime)                    |
+| `end_time`          | When the session ended (datetime)                      |
+| `ip_address`        | IP address of the user                                 |
+| `country`           | Country of the user                                    |
+| `language`          | Language used in the conversation                      |
+| `messages_sent`     | Number of messages in the conversation (integer)       |
+| `sentiment`         | Sentiment analysis of the conversation (string)        |
+| `escalated`         | Whether the conversation was escalated (boolean)       |
+| `forwarded_hr`      | Whether the conversation was forwarded to HR (boolean) |
+| `full_transcript`   | Full transcript of the conversation (text)             |
+| `avg_response_time` | Average response time in seconds (float)               |
+| `tokens`            | Total number of tokens used (integer)                  |
+| `tokens_eur`        | Cost of tokens in EUR (float)                          |
+| `category`          | Category of the conversation (string)                  |
+| `initial_msg`       | First message from the user (text)                     |
+| `user_rating`       | User rating of the conversation (string)               |
 
 ## Future Enhancements
 
@@ -128,4 +130,4 @@ The CSV file should contain the following columns:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is unlicensed. Usage is restricted to personal and educational purposes only. For commercial use, please contact the author.

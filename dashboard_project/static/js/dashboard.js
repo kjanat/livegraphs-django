@@ -55,8 +55,14 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("main").appendChild(loadingOverlay);
 
     fetch(`/dashboard/api/dashboard/${dashboardId}/data/?time_range=${timeRange || "all"}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
+        console.log("Dashboard API response:", data);
         updateDashboardStats(data);
         updateDashboardCharts(data);
 
@@ -115,40 +121,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update dashboard charts
   function updateDashboardCharts(data) {
+    // Check if Plotly is available
+    if (!window.Plotly) {
+      console.error("Plotly library not loaded!");
+      document.querySelectorAll(".chart-container").forEach((container) => {
+        container.innerHTML =
+          '<div class="text-center py-5"><p class="text-danger">Chart library not available. Please refresh the page.</p></div>';
+      });
+      return;
+    }
+
     // Update sessions over time chart
     const timeSeriesData = data.time_series_data;
-    if (timeSeriesData && timeSeriesData.length > 0 && window.Plotly) {
-      const timeSeriesX = timeSeriesData.map((item) => item.date);
-      const timeSeriesY = timeSeriesData.map((item) => item.count);
+    if (timeSeriesData && timeSeriesData.length > 0) {
+      try {
+        const timeSeriesX = timeSeriesData.map((item) => item.date);
+        const timeSeriesY = timeSeriesData.map((item) => item.count);
 
-      Plotly.react(
-        "sessions-time-chart",
-        [
+        Plotly.react(
+          "sessions-time-chart",
+          [
+            {
+              x: timeSeriesX,
+              y: timeSeriesY,
+              type: "scatter",
+              mode: "lines+markers",
+              line: {
+                color: "rgb(75, 192, 192)",
+                width: 2,
+              },
+              marker: {
+                color: "rgb(75, 192, 192)",
+                size: 6,
+              },
+            },
+          ],
           {
-            x: timeSeriesX,
-            y: timeSeriesY,
-            type: "scatter",
-            mode: "lines+markers",
-            line: {
-              color: "rgb(75, 192, 192)",
-              width: 2,
+            margin: { t: 10, r: 10, b: 40, l: 40 },
+            xaxis: {
+              title: "Date",
             },
-            marker: {
-              color: "rgb(75, 192, 192)",
-              size: 6,
+            yaxis: {
+              title: "Number of Sessions",
             },
-          },
-        ],
-        {
-          margin: { t: 10, r: 10, b: 40, l: 40 },
-          xaxis: {
-            title: "Date",
-          },
-          yaxis: {
-            title: "Number of Sessions",
-          },
-        }
-      );
+          }
+        );
+      } catch (error) {
+        console.error("Error rendering time series chart:", error);
+        document.getElementById("sessions-time-chart").innerHTML =
+          '<div class="text-center py-5"><p class="text-danger">Error rendering chart.</p></div>';
+      }
+    } else {
+      document.getElementById("sessions-time-chart").innerHTML =
+        '<div class="text-center py-5"><p class="text-muted">No time series data available</p></div>';
     }
 
     // Update sentiment chart

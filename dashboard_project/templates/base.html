@@ -49,21 +49,21 @@
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
               <a
-                class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+                class="nav-link ajax-nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
                 href="{% url 'dashboard' %}"
                 >Dashboard</a
               >
             </li>
             <li class="nav-item">
               <a
-                class="nav-link {% if request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
+                class="nav-link ajax-nav-link {% if request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
                 href="{% url 'upload_data' %}"
                 >Upload Data</a
               >
             </li>
             <li class="nav-item">
               <a
-                class="nav-link {% if request.resolver_match.url_name == 'search_chat_sessions' %}active{% endif %}"
+                class="nav-link ajax-nav-link {% if request.resolver_match.url_name == 'search_chat_sessions' %}active{% endif %}"
                 href="{% url 'search_chat_sessions' %}"
                 >Search</a
               >
@@ -86,7 +86,9 @@
                   {{ user.username }}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                  <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                  <li>
+                    <a class="dropdown-item ajax-nav-link" href="{% url 'profile' %}">Profile</a>
+                  </li>
                   {% if user.is_staff %}
                     <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
                   {% endif %}
@@ -117,7 +119,7 @@
               <ul class="nav flex-column">
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+                    class="nav-link ajax-nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
                     href="{% url 'dashboard' %}"
                   >
                     <i class="fas fa-tachometer-alt me-2"></i>
@@ -126,7 +128,7 @@
                 </li>
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
+                    class="nav-link ajax-nav-link {% if request.resolver_match.url_name == 'upload_data' %}active{% endif %}"
                     href="{% url 'upload_data' %}"
                   >
                     <i class="fas fa-upload me-2"></i>
@@ -135,7 +137,7 @@
                 </li>
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.resolver_match.url_name == 'search_chat_sessions' %}active{% endif %}"
+                    class="nav-link ajax-nav-link {% if request.resolver_match.url_name == 'search_chat_sessions' %}active{% endif %}"
                     href="{% url 'search_chat_sessions' %}"
                   >
                     <i class="fas fa-search me-2"></i>
@@ -144,7 +146,7 @@
                 </li>
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.resolver_match.url_name == 'data_view' %}active{% endif %}"
+                    class="nav-link ajax-nav-link {% if request.resolver_match.url_name == 'data_view' %}active{% endif %}"
                     href="{% url 'data_view' %}"
                   >
                     <i class="fas fa-table me-2"></i>
@@ -202,23 +204,54 @@
           {# </div> #}
           {# {% endif %} #}
 
-          {% block content %}
-          {% endblock %}
+          <div id="main-content">
+            {% block content %}
+            {% endblock %}
+          </div>
         </main>
       </div>
     </div>
 
     <footer>
       <div class="container">
-        <p>&copy; {% now "Y" %} Chat Analytics Dashboard. All rights reserved.</p>
+        <p>&copy; {% now "Y" %} KJANAT All rights reserved. | Chat Analytics Dashboard.</p>
       </div>
     </footer>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
     <!-- jQuery (for Ajax) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Custom JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/ajax-pagination.js' %}"></script>
+    <script src="{% static 'js/ajax-navigation.js' %}"></script>
+
+    <!-- Enable AJAX Navigation -->
+    <script>
+      // Enable AJAX navigation for the entire application
+      var ENABLE_AJAX_NAVIGATION = true;
+    </script>
+
+    <!-- Check if Plotly loaded successfully -->
+    <script>
+      if (typeof Plotly === "undefined") {
+        console.error("Plotly library failed to load. Will attempt to load fallback.");
+        // Try to load Plotly from alternative source
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/plotly.js@latest/dist/plotly.min.js";
+        script.async = true;
+        script.crossOrigin = "anonymous";
+        document.head.appendChild(script);
+      }
+    </script>
 
     {% block extra_js %}
       {{ block.super }}

@@ -92,10 +92,12 @@ This will create:
 ### Admin Tasks
 
 1. **Access Admin Panel**:
+
    - Go to <http://localhost/admin/>
    - Login with your admin credentials
 
 2. **Create a Company**:
+
    - Go to Companies > Add Company
    - Fill in the company details and save
 
@@ -108,10 +110,12 @@ This will create:
 ### Company Admin Tasks
 
 1. **Login to Dashboard**:
+
    - Go to <http://localhost/>
    - Login with your company admin credentials
 
 2. **Upload Chat Data**:
+
    - Click on "Upload Data" in the sidebar
    - Fill in the data source details
    - Select a CSV file containing chat data
@@ -126,11 +130,13 @@ This will create:
 ### Regular User Tasks
 
 1. **View Dashboard**:
+
    - Login with your user credentials
    - The dashboard will show automatically
    - Select different dashboards from the sidebar
 
 2. **Search Chat Sessions**:
+
    - Click on "Search" in the top navigation
    - Enter search terms
    - Use filters to refine results
@@ -143,25 +149,25 @@ This will create:
 
 Your CSV files should include the following columns:
 
-| Column            | Description                     | Type     |
-| ----------------- | ------------------------------- | -------- |
-| session_id        | Unique ID for the chat          | String   |
-| start_time        | Session start time              | Datetime |
-| end_time          | Session end time                | Datetime |
-| ip_address        | User's IP address               | String   |
-| country           | User's country                  | String   |
-| language          | Chat language                   | String   |
-| messages_sent     | Number of messages              | Integer  |
-| sentiment         | Sentiment analysis result       | String   |
-| escalated         | Whether chat was escalated      | Boolean  |
-| forwarded_hr      | Whether chat was sent to HR     | Boolean  |
-| full_transcript   | Complete chat text              | Text     |
-| avg_response_time | Average response time (seconds) | Float    |
-| tokens            | Number of tokens used           | Integer  |
-| tokens_eur        | Cost in EUR                     | Float    |
-| category          | Chat category                   | String   |
-| initial_msg       | First user message              | Text     |
-| user_rating       | User satisfaction rating        | String   |
+| Column              | Description                     | Type     |
+| ------------------- | ------------------------------- | -------- |
+| `session_id`        | Unique ID for the chat          | String   |
+| `start_time`        | Session start time              | Datetime |
+| `end_time`          | Session end time                | Datetime |
+| `ip_address`        | User's IP address               | String   |
+| `country`           | User's country                  | String   |
+| `language`          | Chat language                   | String   |
+| `messages_sent`     | Number of messages              | Integer  |
+| `sentiment`         | Sentiment analysis result       | String   |
+| `escalated`         | Whether chat was escalated      | Boolean  |
+| `forwarded_hr`      | Whether chat was sent to HR     | Boolean  |
+| `full_transcript`   | Complete chat text              | Text     |
+| `avg_response_time` | Average response time (seconds) | Float    |
+| `tokens`            | Number of tokens used           | Integer  |
+| `tokens_eur`        | Cost in EUR                     | Float    |
+| `category`          | Chat category                   | String   |
+| `initial_msg`       | First user message              | Text     |
+| `user_rating`       | User satisfaction rating        | String   |
 
 Example CSV row:
 
