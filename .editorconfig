@@ -18,7 +18,8 @@ indent_size = 4
 
 # HTML and Django/Jinja2 template files
 [*.{html,htm}]
-indent_size = 2
+indent_style = tab
+indent_size = 4
 # Allow prettier to format Django/Jinja templates properly
 # The following comment options can be used in individual files if needed:
 # <!-- prettier-ignore -->
@@ -26,6 +27,7 @@ indent_size = 2
 
 # CSS, JavaScript, and JSON files
 [*.{css,scss,js,json}]
+indent_style = tab
 indent_size = 4
 
 # Markdown files

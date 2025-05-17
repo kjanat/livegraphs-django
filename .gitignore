@@ -407,3 +407,12 @@ pyrightconfig.json
 *Zone.Identifier
 examples/
 **/migrations/[0-9]**.py
+
+# UV specific
+.uv/
+.uv-configs/
+
+# Pyright and IDE specific
+.vscode/
+.idea/
+.pyright/

@@ -1,5 +1,7 @@
 # dashboard/utils.py
 
+import contextlib
+
 import numpy as np
 import pandas as pd
 from django.db import models
@@ -25,17 +27,13 @@ def process_csv_file(data_source):
             # Handle datetime fields
             start_time = None
             end_time = None
-
             if "start_time" in row and pd.notna(row["start_time"]):
-                try:
+                with contextlib.suppress(Exception):
                     start_time = make_aware(pd.to_datetime(row["start_time"]))
-                except Exception:
-                    pass
 
             if "end_time" in row and pd.notna(row["end_time"]):
-                try:
+                with contextlib.suppress(Exception):
                     end_time = make_aware(pd.to_datetime(row["end_time"]))
-                except Exception:
                     pass
 
             # Convert boolean fields

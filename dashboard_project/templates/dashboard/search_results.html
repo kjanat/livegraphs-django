@@ -4,82 +4,90 @@
 {% block title %}Search Results | Chat Analytics{% endblock %}
 
 {% block content %}
-  <div
-    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-  >
-    <h1 class="h2">Search Results</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-      <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary ajax-nav-link">
-        <i class="fas fa-arrow-left"></i> Back to Dashboard
-      </a>
-    </div>
-  </div>
+	<div
+		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+	>
+		<h1 class="h2">Search Results</h1>
+		<div class="btn-toolbar mb-2 mb-md-0">
+			<a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary ajax-nav-link">
+				<i class="fas fa-arrow-left"></i> Back to Dashboard
+			</a>
+		</div>
+	</div>
 
-  <div class="row mb-4">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">Search Chat Sessions</h5>
-        </div>
-        <div class="card-body">
-          <form method="get" action="{% url 'search_chat_sessions' %}" class="search-form">
-            <div class="input-group">
-              <input
-                type="text"
-                name="q"
-                class="form-control"
-                placeholder="Search sessions..."
-                value="{{ query }}"
-                aria-label="Search sessions"
-              />
-              {% if data_source %}
-                <input type="hidden" name="data_source_id" value="{{ data_source.id }}" />
-              {% endif %}
-              <button class="btn btn-outline-primary" type="submit">
-                <i class="fas fa-search"></i> Search
-              </button>
-            </div>
-            <div class="mt-2 text-muted">
-              <small
-                >Search by session ID, country, language, sentiment, category, or message
-                content.</small
-              >
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="row mb-4">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">Search Chat Sessions</h5>
+				</div>
+				<div class="card-body">
+					<form
+						method="get"
+						action="{% url 'search_chat_sessions' %}"
+						class="search-form"
+					>
+						<div class="input-group">
+							<input
+								type="text"
+								name="q"
+								class="form-control"
+								placeholder="Search sessions..."
+								value="{{ query }}"
+								aria-label="Search sessions"
+							/>
+							{% if data_source %}
+								<input
+									type="hidden"
+									name="data_source_id"
+									value="{{ data_source.id }}"
+								/>
+							{% endif %}
+							<button class="btn btn-outline-primary" type="submit">
+								<i class="fas fa-search"></i> Search
+							</button>
+						</div>
+						<div class="mt-2 text-muted">
+							<small
+								>Search by session ID, country, language, sentiment, category, or
+								message content.</small
+							>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">
-            Results {% if query %}for "{{ query }}"{% endif %}
-            {% if data_source %}in {{ data_source.name }}{% endif %}
-            ({{ page_obj.paginator.count }})
-          </h5>
-        </div>
-        <div class="card-body">
-          <!-- Loading spinner shown during AJAX requests -->
-          <div id="ajax-loading-spinner" class="text-center py-4 d-none">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-2">Loading data...</p>
-          </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">
+						Results {% if query %}for "{{ query }}"{% endif %}
+						{% if data_source %}in {{ data_source.name }}{% endif %}
+						({{ page_obj.paginator.count }})
+					</h5>
+				</div>
+				<div class="card-body">
+					<!-- Loading spinner shown during AJAX requests -->
+					<div id="ajax-loading-spinner" class="text-center py-4 d-none">
+						<div class="spinner-border text-primary" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</div>
+						<p class="mt-2">Loading data...</p>
+					</div>
 
-          <!-- Search results container that will be updated via AJAX -->
-          <div id="ajax-content-container">
-            {% include "dashboard/partials/search_results_table.html" %}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+					<!-- Search results container that will be updated via AJAX -->
+					<div id="ajax-content-container">
+						{% include "dashboard/partials/search_results_table.html" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block extra_js %}
-  <!-- No need for extra JavaScript here, using common ajax-pagination.js -->
+	<!-- No need for extra JavaScript here, using common ajax-pagination.js -->
 {% endblock %}

@@ -1,6 +1,17 @@
 {
-  "devDependencies": {
-    "prettier": "^3.5.3",
-    "prettier-plugin-jinja-template": "^2.1.0"
-  }
+	"name": "livegraphsdjango",
+	"version": "0.1.0",
+	"description": "Live Graphs Django Dashboard",
+	"private": true,
+	"scripts": {
+		"lint": "eslint dashboard_project/static/js/",
+		"format": "prettier --write \"dashboard_project/static/**/*.{js,css,html}\"",
+		"format:check": "prettier --check \"dashboard_project/static/**/*.{js,css,html}\"",
+		"stylelint": "stylelint \"dashboard_project/static/css/**/*.css\" --fix",
+		"stylelint:check": "stylelint \"dashboard_project/static/css/**/*.css\""
+	},
+	"devDependencies": {
+		"prettier": "^3.5.3",
+		"prettier-plugin-jinja-template": "^2.1.0"
+	}
 }

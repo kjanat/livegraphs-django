@@ -1,0 +1,18 @@
+[uv]
+# Keep the uv.lock file up to date
+keep-lockfile = true
+
+# Cache compiled bytecode for dependencies
+compile-bytecode = true
+
+# Use a local cache directory
+local-cache = true
+
+# Verbosity of output
+verbosity = "minimal"
+
+# Define which part of the environment to check
+environment-checks = ["python", "dependencies"]
+
+# How to resolve dependencies not specified with exact versions
+dependency-resolution = "strict"

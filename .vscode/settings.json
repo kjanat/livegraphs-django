@@ -43,5 +43,5 @@
         "notebook.source.organizeImports": "explicit"
     },
     "notebook.formatOnSave.enabled": true,
-    "prettier.requireConfig": true,
+    "prettier.requireConfig": true
 }

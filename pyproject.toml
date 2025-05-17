@@ -1,9 +1,21 @@
 [project]
 name = "livegraphsdjango"
 version = "0.1.0"
-description = "Add your description here"
+description = "Live Graphs Django Dashboard"
 readme = "README.md"
 requires-python = ">=3.13"
+authors = [{ name = "LiveGraphs Team" }]
+license = { text = "MIT" }
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
 dependencies = [
     "crispy-bootstrap5>=2025.4",
     "django>=5.2.1",
@@ -17,16 +29,29 @@ dependencies = [
     "whitenoise>=6.9.0",
 ]
 
-[project.scripts]
-# Django management commands
-"manage" = "dashboard_project.manage:main"
-"runserver" = "dashboard_project.manage:main"
-"migrate" = "dashboard_project.manage:main"
-"makemigrations" = "dashboard_project.manage:main"
-"collectstatic" = "dashboard_project.manage:main"
-"createsuperuser" = "dashboard_project.manage:main"
-"shell" = "dashboard_project.manage:main"
-"test" = "dashboard_project.manage:main"
+[dependency-groups]
+dev = [
+    "bandit>=1.8.3",
+    "black>=25.1.0",
+    "coverage>=7.8.0",
+    "django-debug-toolbar>=5.2.0",
+    "django-stubs>=5.2.0",
+    "mypy>=1.15.0",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "pytest-django>=4.11.1",
+    "ruff>=0.11.10",
+]
+
+[build-system]
+requires = ["setuptools>=69.0.0", "wheel>=0.42.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["dashboard_project"]
+
+[tool.setuptools.package-data]
+"dashboard_project" = ["static/**/*", "templates/**/*", "media/**/*"]
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
@@ -67,7 +92,7 @@ indent-width = 4
 target-version = "py313"
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = ["E", "F", "I", "B", "C4", "ARG", "SIM", "PERF"]
 ignore = ["E501"]
 fixable = ["ALL"]
 unfixable = []
@@ -76,3 +101,55 @@ unfixable = []
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
+
+[tool.bandit]
+exclude_dirs = ["tests", "venv", ".venv", ".git", "__pycache__", "migrations", "**/create_sample_data.py"]
+skips = ["B101"]
+targets = ["dashboard_project"]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+plugins = ["mypy_django_plugin.main"]
+
+[[tool.mypy.overrides]]
+module = ["django.*", "rest_framework.*"]
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "dashboard_project.settings"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "dashboard_project.settings"
+python_files = "test_*.py"
+testpaths = ["dashboard_project"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["dashboard_project"]
+omit = [
+    "dashboard_project/manage.py",
+    "dashboard_project/*/migrations/*",
+    "dashboard_project/*/tests/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
+
+[project.urls]
+"Documentation" = "https://github.com/kjanat/livegraphsdjango#readme"
+"Source" = "https://github.com/kjanat/livegraphsdjango"
+"Bug Tracker" = "https://github.com/kjanat/livegraphsdjango/issues"

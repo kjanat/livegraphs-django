@@ -3,128 +3,143 @@
 {% block title %}Chat Session {{ session.session_id }} | Chat Analytics{% endblock %}
 
 {% block content %}
-  <div
-    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-  >
-    <h1 class="h2">Chat Session: {{ session.session_id }}</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-      <a
-        href="{% url 'data_source_detail' session.data_source.id %}"
-        class="btn btn-sm btn-outline-secondary"
-      >
-        <i class="fas fa-arrow-left"></i> Back to Data Source
-      </a>
-    </div>
-  </div>
+	<div
+		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+	>
+		<h1 class="h2">Chat Session: {{ session.session_id }}</h1>
+		<div class="btn-toolbar mb-2 mb-md-0">
+			<a
+				href="{% url 'data_source_detail' session.data_source.id %}"
+				class="btn btn-sm btn-outline-secondary"
+			>
+				<i class="fas fa-arrow-left"></i> Back to Data Source
+			</a>
+		</div>
+	</div>
 
-  <div class="row mb-4">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">Session Information</h5>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6">
-              <p><strong>Session ID:</strong> {{ session.session_id }}</p>
-              <p><strong>Start Time:</strong> {{ session.start_time|date:"F d, Y H:i" }}</p>
-              <p><strong>End Time:</strong> {{ session.end_time|date:"F d, Y H:i" }}</p>
-              <p><strong>IP Address:</strong> {{ session.ip_address|default:"N/A" }}</p>
-              <p><strong>Country:</strong> {{ session.country|default:"N/A" }}</p>
-              <p><strong>Language:</strong> {{ session.language|default:"N/A" }}</p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Messages Sent:</strong> {{ session.messages_sent }}</p>
-              <p>
-                <strong>Average Response Time:</strong>
-                {{ session.avg_response_time|floatformat:2 }}s
-              </p>
-              <p><strong>Tokens:</strong> {{ session.tokens }}</p>
-              <p><strong>Token Cost:</strong> €{{ session.tokens_eur|floatformat:2 }}</p>
-              <p><strong>Category:</strong> {{ session.category|default:"N/A" }}</p>
-              <p>
-                <strong>Sentiment:</strong>
-                {% if session.sentiment %}
-                  {% if 'positive' in session.sentiment|lower %}
-                    <span class="badge bg-success">{{ session.sentiment }}</span>
-                  {% elif 'negative' in session.sentiment|lower %}
-                    <span class="badge bg-danger">{{ session.sentiment }}</span>
-                  {% elif 'neutral' in session.sentiment|lower %}
-                    <span class="badge bg-warning">{{ session.sentiment }}</span>
-                  {% else %}
-                    <span class="badge bg-secondary">{{ session.sentiment }}</span>
-                  {% endif %}
-                {% else %}
-                  <span class="text-muted">N/A</span>
-                {% endif %}
-              </p>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-12">
-              <p class="mb-2"><strong>Initial Message:</strong></p>
-              <div class="card bg-light">
-                <div class="card-body">
-                  <p class="mb-0">{{ session.initial_msg|default:"N/A" }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">Additional Info</h5>
-        </div>
-        <div class="card-body">
-          <p>
-            <strong>Escalated:</strong> {% if session.escalated %}
-              <span class="badge bg-danger">Yes</span>
-            {% else %}
-              <span class="badge bg-success">No</span>
-            {% endif %}
-          </p>
-          <p>
-            <strong>Forwarded to HR:</strong> {% if session.forwarded_hr %}
-              <span class="badge bg-danger">Yes</span>
-            {% else %}
-              <span class="badge bg-success">No</span>
-            {% endif %}
-          </p>
-          <p><strong>User Rating:</strong> {{ session.user_rating|default:"N/A" }}</p>
-          <hr />
-          <p>
-            <strong>Data Source:</strong>
-            <a href="{% url 'data_source_detail' session.data_source.id %}"
-              >{{ session.data_source.name }}</a
-            >
-          </p>
-          <p><strong>Company:</strong> {{ session.data_source.company.name }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="row mb-4">
+		<div class="col-md-8">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">Session Information</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6">
+							<p><strong>Session ID:</strong> {{ session.session_id }}</p>
+							<p>
+								<strong>Start Time:</strong>
+								{{ session.start_time|date:"F d, Y H:i" }}
+							</p>
+							<p>
+								<strong>End Time:</strong> {{ session.end_time|date:"F d, Y H:i" }}
+							</p>
+							<p>
+								<strong>IP Address:</strong> {{ session.ip_address|default:"N/A" }}
+							</p>
+							<p><strong>Country:</strong> {{ session.country|default:"N/A" }}</p>
+							<p><strong>Language:</strong> {{ session.language|default:"N/A" }}</p>
+						</div>
+						<div class="col-md-6">
+							<p><strong>Messages Sent:</strong> {{ session.messages_sent }}</p>
+							<p>
+								<strong>Average Response Time:</strong>
+								{{ session.avg_response_time|floatformat:2 }}s
+							</p>
+							<p><strong>Tokens:</strong> {{ session.tokens }}</p>
+							<p>
+								<strong>Token Cost:</strong> €{{ session.tokens_eur|floatformat:2 }}
+							</p>
+							<p><strong>Category:</strong> {{ session.category|default:"N/A" }}</p>
+							<p>
+								<strong>Sentiment:</strong>
+								{% if session.sentiment %}
+									{% if 'positive' in session.sentiment|lower %}
+										<span class="badge bg-success"
+											>{{ session.sentiment }}</span
+										>
+									{% elif 'negative' in session.sentiment|lower %}
+										<span class="badge bg-danger">{{ session.sentiment }}</span>
+									{% elif 'neutral' in session.sentiment|lower %}
+										<span class="badge bg-warning"
+											>{{ session.sentiment }}</span
+										>
+									{% else %}
+										<span class="badge bg-secondary"
+											>{{ session.sentiment }}</span
+										>
+									{% endif %}
+								{% else %}
+									<span class="text-muted">N/A</span>
+								{% endif %}
+							</p>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-12">
+							<p class="mb-2"><strong>Initial Message:</strong></p>
+							<div class="card bg-light">
+								<div class="card-body">
+									<p class="mb-0">{{ session.initial_msg|default:"N/A" }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">Additional Info</h5>
+				</div>
+				<div class="card-body">
+					<p>
+						<strong>Escalated:</strong> {% if session.escalated %}
+							<span class="badge bg-danger">Yes</span>
+						{% else %}
+							<span class="badge bg-success">No</span>
+						{% endif %}
+					</p>
+					<p>
+						<strong>Forwarded to HR:</strong> {% if session.forwarded_hr %}
+							<span class="badge bg-danger">Yes</span>
+						{% else %}
+							<span class="badge bg-success">No</span>
+						{% endif %}
+					</p>
+					<p><strong>User Rating:</strong> {{ session.user_rating|default:"N/A" }}</p>
+					<hr />
+					<p>
+						<strong>Data Source:</strong>
+						<a href="{% url 'data_source_detail' session.data_source.id %}"
+							>{{ session.data_source.name }}</a
+						>
+					</p>
+					<p><strong>Company:</strong> {{ session.data_source.company.name }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">Full Transcript</h5>
-        </div>
-        <div class="card-body">
-          {% if session.full_transcript %}
-            <div class="chat-transcript" style="max-height: 500px; overflow-y: auto;">
-              <pre style="white-space: pre-wrap; font-family: inherit;">
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">Full Transcript</h5>
+				</div>
+				<div class="card-body">
+					{% if session.full_transcript %}
+						<div class="chat-transcript" style="max-height: 500px; overflow-y: auto;">
+							<pre style="white-space: pre-wrap; font-family: inherit;">
 {{ session.full_transcript }}</pre
-              >
-            </div>
-          {% else %}
-            <p class="text-center text-muted">No transcript available.</p>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </div>
+							>
+						</div>
+					{% else %}
+						<p class="text-center text-muted">No transcript available.</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

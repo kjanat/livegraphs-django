@@ -5,155 +5,163 @@
 {% block title %}Dashboard | Chat Analytics{% endblock %}
 
 {% block content %}
-  <div
-    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-  >
-    <h1 class="h2">{{ selected_dashboard.name }}</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-      <div class="btn-group me-2">
-        <a
-          href="{% url 'edit_dashboard' selected_dashboard.id %}"
-          class="btn btn-sm btn-outline-secondary"
-        >
-          <i class="fas fa-edit"></i> Edit
-        </a>
-        <a
-          href="{% url 'delete_dashboard' selected_dashboard.id %}"
-          class="btn btn-sm btn-outline-danger"
-        >
-          <i class="fas fa-trash"></i> Delete
-        </a>
-        <a
-          href="{% url 'export_chats_csv' %}?dashboard_id={{ selected_dashboard.id }}"
-          class="btn btn-sm btn-outline-success"
-        >
-          <i class="fas fa-file-csv"></i> Export CSV
-        </a>
-      </div>
-      <div class="dropdown">
-        <button
-          class="btn btn-sm btn-outline-primary dropdown-toggle"
-          type="button"
-          id="timeRangeDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i class="fas fa-calendar"></i> Time Range
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="timeRangeDropdown">
-          <li>
-            <a class="dropdown-item" href="?dashboard_id={{ selected_dashboard.id }}&time_range=7"
-              >Last 7 days</a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item" href="?dashboard_id={{ selected_dashboard.id }}&time_range=30"
-              >Last 30 days</a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item" href="?dashboard_id={{ selected_dashboard.id }}&time_range=90"
-              >Last 90 days</a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item" href="?dashboard_id={{ selected_dashboard.id }}&time_range=all"
-              >All time</a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+	<div
+		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+	>
+		<h1 class="h2">{{ selected_dashboard.name }}</h1>
+		<div class="btn-toolbar mb-2 mb-md-0">
+			<div class="btn-group me-2">
+				<a
+					href="{% url 'edit_dashboard' selected_dashboard.id %}"
+					class="btn btn-sm btn-outline-secondary"
+				>
+					<i class="fas fa-edit"></i> Edit
+				</a>
+				<a
+					href="{% url 'delete_dashboard' selected_dashboard.id %}"
+					class="btn btn-sm btn-outline-danger"
+				>
+					<i class="fas fa-trash"></i> Delete
+				</a>
+				<a
+					href="{% url 'export_chats_csv' %}?dashboard_id={{ selected_dashboard.id }}"
+					class="btn btn-sm btn-outline-success"
+				>
+					<i class="fas fa-file-csv"></i> Export CSV
+				</a>
+			</div>
+			<div class="dropdown">
+				<button
+					class="btn btn-sm btn-outline-primary dropdown-toggle"
+					type="button"
+					id="timeRangeDropdown"
+					data-bs-toggle="dropdown"
+					aria-expanded="false"
+				>
+					<i class="fas fa-calendar"></i> Time Range
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="timeRangeDropdown">
+					<li>
+						<a
+							class="dropdown-item"
+							href="?dashboard_id={{ selected_dashboard.id }}&time_range=7"
+							>Last 7 days</a
+						>
+					</li>
+					<li>
+						<a
+							class="dropdown-item"
+							href="?dashboard_id={{ selected_dashboard.id }}&time_range=30"
+							>Last 30 days</a
+						>
+					</li>
+					<li>
+						<a
+							class="dropdown-item"
+							href="?dashboard_id={{ selected_dashboard.id }}&time_range=90"
+							>Last 90 days</a
+						>
+					</li>
+					<li>
+						<a
+							class="dropdown-item"
+							href="?dashboard_id={{ selected_dashboard.id }}&time_range=all"
+							>All time</a
+						>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 
-  <div class="row mb-3">
-    <div class="col-md-3">
-      <div class="card stats-card bg-primary text-white">
-        <div class="card-body">
-          <h6 class="card-title">Total Sessions</h6>
-          <h3>{{ dashboard_data.total_sessions }}</h3>
-          <p>Chat conversations</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card stats-card bg-success text-white">
-        <div class="card-body">
-          <h6 class="card-title">Avg Response Time</h6>
-          <h3>{{ dashboard_data.avg_response_time }}s</h3>
-          <p>Average response</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card stats-card bg-info text-white">
-        <div class="card-body">
-          <h6 class="card-title">Total Tokens</h6>
-          <h3>{{ dashboard_data.total_tokens }}</h3>
-          <p>Total usage</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card stats-card bg-warning text-white">
-        <div class="card-body">
-          <h6 class="card-title">Total Cost</h6>
-          <h3>€{{ dashboard_data.total_cost }}</h3>
-          <p>Token cost</p>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="row mb-3">
+		<div class="col-md-3">
+			<div class="card stats-card bg-primary text-white">
+				<div class="card-body">
+					<h6 class="card-title">Total Sessions</h6>
+					<h3>{{ dashboard_data.total_sessions }}</h3>
+					<p>Chat conversations</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card stats-card bg-success text-white">
+				<div class="card-body">
+					<h6 class="card-title">Avg Response Time</h6>
+					<h3>{{ dashboard_data.avg_response_time }}s</h3>
+					<p>Average response</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card stats-card bg-info text-white">
+				<div class="card-body">
+					<h6 class="card-title">Total Tokens</h6>
+					<h3>{{ dashboard_data.total_tokens }}</h3>
+					<p>Total usage</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card stats-card bg-warning text-white">
+				<div class="card-body">
+					<h6 class="card-title">Total Cost</h6>
+					<h3>€{{ dashboard_data.total_cost }}</h3>
+					<p>Token cost</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">Sessions Over Time</h5>
-        </div>
-        <div class="card-body">
-          <div id="sessions-time-chart" class="chart-container"></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">Sentiment Analysis</h5>
-        </div>
-        <div class="card-body">
-          <div id="sentiment-chart" class="chart-container"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">Sessions Over Time</h5>
+				</div>
+				<div class="card-body">
+					<div id="sessions-time-chart" class="chart-container"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">Sentiment Analysis</h5>
+				</div>
+				<div class="card-body">
+					<div id="sentiment-chart" class="chart-container"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <div class="row mt-4">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">Top Countries</h5>
-        </div>
-        <div class="card-body">
-          <div id="country-chart" class="chart-container"></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title mb-0">Categories</h5>
-        </div>
-        <div class="card-body">
-          <div id="category-chart" class="chart-container"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="row mt-4">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">Top Countries</h5>
+				</div>
+				<div class="card-body">
+					<div id="country-chart" class="chart-container"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">Categories</h5>
+				</div>
+				<div class="card-body">
+					<div id="category-chart" class="chart-container"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block extra_js %}
-  <!-- prettier-ignore-start -->
+	<!-- prettier-ignore-start -->
   <!-- Store the JSON data in script tags to avoid parsing issues -->
   <script type="application/json" id="time-series-data">{{ time_series_data_json|safe }}</script>
   <script type="application/json" id="sentiment-data">{{ sentiment_data_json|safe }}</script>
@@ -161,154 +169,161 @@
   <script type="application/json" id="category-data">{{ category_data_json|safe }}</script>
   <!-- prettier-ignore-end -->
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      try {
-        // Parse the dashboard data components from script tags
-        const timeSeriesData = JSON.parse(document.getElementById("time-series-data").textContent);
-        const sentimentData = JSON.parse(document.getElementById("sentiment-data").textContent);
-        const countryData = JSON.parse(document.getElementById("country-data").textContent);
-        const categoryData = JSON.parse(document.getElementById("category-data").textContent);
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			try {
+				// Parse the dashboard data components from script tags
+				const timeSeriesData = JSON.parse(
+					document.getElementById("time-series-data").textContent,
+				);
+				const sentimentData = JSON.parse(
+					document.getElementById("sentiment-data").textContent,
+				);
+				const countryData = JSON.parse(document.getElementById("country-data").textContent);
+				const categoryData = JSON.parse(
+					document.getElementById("category-data").textContent,
+				);
 
-        console.log("Time series data loaded:", timeSeriesData);
-        console.log("Sentiment data loaded:", sentimentData);
-        console.log("Country data loaded:", countryData);
-        console.log("Category data loaded:", categoryData);
+				console.log("Time series data loaded:", timeSeriesData);
+				console.log("Sentiment data loaded:", sentimentData);
+				console.log("Country data loaded:", countryData);
+				console.log("Category data loaded:", categoryData);
 
-        // Sessions over time chart
-        if (timeSeriesData && timeSeriesData.length > 0) {
-          const timeSeriesX = timeSeriesData.map((item) => item.date);
-          const timeSeriesY = timeSeriesData.map((item) => item.count);
+				// Sessions over time chart
+				if (timeSeriesData && timeSeriesData.length > 0) {
+					const timeSeriesX = timeSeriesData.map((item) => item.date);
+					const timeSeriesY = timeSeriesData.map((item) => item.count);
 
-          Plotly.newPlot(
-            "sessions-time-chart",
-            [
-              {
-                x: timeSeriesX,
-                y: timeSeriesY,
-                type: "scatter",
-                mode: "lines+markers",
-                line: {
-                  color: "rgb(75, 192, 192)",
-                  width: 2,
-                },
-                marker: {
-                  color: "rgb(75, 192, 192)",
-                  size: 6,
-                },
-              },
-            ],
-            {
-              margin: { t: 10, r: 10, b: 40, l: 40 },
-              xaxis: {
-                title: "Date",
-              },
-              yaxis: {
-                title: "Number of Sessions",
-              },
-            }
-          );
-        } else {
-          document.getElementById("sessions-time-chart").innerHTML =
-            '<div class="text-center py-5"><p class="text-muted">No time series data available</p></div>';
-        }
+					Plotly.newPlot(
+						"sessions-time-chart",
+						[
+							{
+								x: timeSeriesX,
+								y: timeSeriesY,
+								type: "scatter",
+								mode: "lines+markers",
+								line: {
+									color: "rgb(75, 192, 192)",
+									width: 2,
+								},
+								marker: {
+									color: "rgb(75, 192, 192)",
+									size: 6,
+								},
+							},
+						],
+						{
+							margin: { t: 10, r: 10, b: 40, l: 40 },
+							xaxis: {
+								title: "Date",
+							},
+							yaxis: {
+								title: "Number of Sessions",
+							},
+						},
+					);
+				} else {
+					document.getElementById("sessions-time-chart").innerHTML =
+						'<div class="text-center py-5"><p class="text-muted">No time series data available</p></div>';
+				}
 
-        // Sentiment analysis chart
-        if (sentimentData && sentimentData.length > 0) {
-          const sentimentLabels = sentimentData.map((item) => item.sentiment);
-          const sentimentValues = sentimentData.map((item) => item.count);
-          const sentimentColors = sentimentLabels.map((sentiment) => {
-            if (sentiment.toLowerCase().includes("positive")) return "rgb(75, 192, 92)";
-            if (sentiment.toLowerCase().includes("negative")) return "rgb(255, 99, 132)";
-            if (sentiment.toLowerCase().includes("neutral")) return "rgb(255, 205, 86)";
-            return "rgb(201, 203, 207)";
-          });
+				// Sentiment analysis chart
+				if (sentimentData && sentimentData.length > 0) {
+					const sentimentLabels = sentimentData.map((item) => item.sentiment);
+					const sentimentValues = sentimentData.map((item) => item.count);
+					const sentimentColors = sentimentLabels.map((sentiment) => {
+						if (sentiment.toLowerCase().includes("positive")) return "rgb(75, 192, 92)";
+						if (sentiment.toLowerCase().includes("negative"))
+							return "rgb(255, 99, 132)";
+						if (sentiment.toLowerCase().includes("neutral")) return "rgb(255, 205, 86)";
+						return "rgb(201, 203, 207)";
+					});
 
-          Plotly.newPlot(
-            "sentiment-chart",
-            [
-              {
-                values: sentimentValues,
-                labels: sentimentLabels,
-                type: "pie",
-                marker: {
-                  colors: sentimentColors,
-                },
-                hole: 0.4,
-                textinfo: "label+percent",
-                insidetextorientation: "radial",
-              },
-            ],
-            {
-              margin: { t: 10, r: 10, b: 10, l: 10 },
-            }
-          );
-        } else {
-          document.getElementById("sentiment-chart").innerHTML =
-            '<div class="text-center py-5"><p class="text-muted">No sentiment data available</p></div>';
-        }
+					Plotly.newPlot(
+						"sentiment-chart",
+						[
+							{
+								values: sentimentValues,
+								labels: sentimentLabels,
+								type: "pie",
+								marker: {
+									colors: sentimentColors,
+								},
+								hole: 0.4,
+								textinfo: "label+percent",
+								insidetextorientation: "radial",
+							},
+						],
+						{
+							margin: { t: 10, r: 10, b: 10, l: 10 },
+						},
+					);
+				} else {
+					document.getElementById("sentiment-chart").innerHTML =
+						'<div class="text-center py-5"><p class="text-muted">No sentiment data available</p></div>';
+				}
 
-        // Country chart
-        if (countryData && countryData.length > 0) {
-          const countryLabels = countryData.map((item) => item.country);
-          const countryValues = countryData.map((item) => item.count);
+				// Country chart
+				if (countryData && countryData.length > 0) {
+					const countryLabels = countryData.map((item) => item.country);
+					const countryValues = countryData.map((item) => item.count);
 
-          Plotly.newPlot(
-            "country-chart",
-            [
-              {
-                x: countryValues,
-                y: countryLabels,
-                type: "bar",
-                orientation: "h",
-                marker: {
-                  color: "rgb(54, 162, 235)",
-                },
-              },
-            ],
-            {
-              margin: { t: 10, r: 10, b: 40, l: 100 },
-              xaxis: {
-                title: "Number of Sessions",
-              },
-            }
-          );
-        } else {
-          document.getElementById("country-chart").innerHTML =
-            '<div class="text-center py-5"><p class="text-muted">No country data available</p></div>';
-        }
+					Plotly.newPlot(
+						"country-chart",
+						[
+							{
+								x: countryValues,
+								y: countryLabels,
+								type: "bar",
+								orientation: "h",
+								marker: {
+									color: "rgb(54, 162, 235)",
+								},
+							},
+						],
+						{
+							margin: { t: 10, r: 10, b: 40, l: 100 },
+							xaxis: {
+								title: "Number of Sessions",
+							},
+						},
+					);
+				} else {
+					document.getElementById("country-chart").innerHTML =
+						'<div class="text-center py-5"><p class="text-muted">No country data available</p></div>';
+				}
 
-        // Category chart
-        if (categoryData && categoryData.length > 0) {
-          const categoryLabels = categoryData.map((item) => item.category);
-          const categoryValues = categoryData.map((item) => item.count);
+				// Category chart
+				if (categoryData && categoryData.length > 0) {
+					const categoryLabels = categoryData.map((item) => item.category);
+					const categoryValues = categoryData.map((item) => item.count);
 
-          Plotly.newPlot(
-            "category-chart",
-            [
-              {
-                labels: categoryLabels,
-                values: categoryValues,
-                type: "pie",
-                textinfo: "label+percent",
-                insidetextorientation: "radial",
-              },
-            ],
-            {
-              margin: { t: 10, r: 10, b: 10, l: 10 },
-            }
-          );
-        } else {
-          document.getElementById("category-chart").innerHTML =
-            '<div class="text-center py-5"><p class="text-muted">No category data available</p></div>';
-        }
-      } catch (error) {
-        console.error("Error rendering charts:", error);
-        document.querySelectorAll(".chart-container").forEach((container) => {
-          container.innerHTML =
-            '<div class="text-center py-5"><p class="text-danger">Error loading chart data. Please refresh the page.</p></div>';
-        });
-      }
-    });
-  </script>
+					Plotly.newPlot(
+						"category-chart",
+						[
+							{
+								labels: categoryLabels,
+								values: categoryValues,
+								type: "pie",
+								textinfo: "label+percent",
+								insidetextorientation: "radial",
+							},
+						],
+						{
+							margin: { t: 10, r: 10, b: 10, l: 10 },
+						},
+					);
+				} else {
+					document.getElementById("category-chart").innerHTML =
+						'<div class="text-center py-5"><p class="text-muted">No category data available</p></div>';
+				}
+			} catch (error) {
+				console.error("Error rendering charts:", error);
+				document.querySelectorAll(".chart-container").forEach((container) => {
+					container.innerHTML =
+						'<div class="text-center py-5"><p class="text-danger">Error loading chart data. Please refresh the page.</p></div>';
+				});
+			}
+		});
+	</script>
 {% endblock %}

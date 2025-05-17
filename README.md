@@ -15,9 +15,9 @@ A Django application that creates an analytics dashboard for chat session data. 
 ## Requirements
 
 - Python 3.13+
-- Django 5.0+
-- PostgreSQL (optional, SQLite is fine for development)
-- Other dependencies listed in [`pyproject.toml`](pyproject.toml)
+- Django 5.2+
+- UV package manager (recommended)
+- Other dependencies listed in [`pyproject.toml`](./pyproject.toml)
 
 ## Setup
 
@@ -27,42 +27,103 @@ A Django application that creates an analytics dashboard for chat session data. 
 
    ```sh
    git clone <repository-url>
-   cd dashboard_project
+   cd LiveGraphsDjango
    ```
 
-2. Create a virtual environment and activate it:
+2. Install uv if you don't have it yet:
+
+   ```sh
+   # Install using pip
+   pip install uv
+
+   # Or with curl (Unix/macOS)
+   curl -sSf https://install.pypa.io/get-uv.py | python3 -
+
+   # Or on Windows with PowerShell
+   irm https://install.pypa.io/get-uv.ps1 | iex
+   ```
+
+3. Create a virtual environment and activate it:
 
    ```sh
    uv venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
-3. Install dependencies:
+4. Install dependencies:
 
    ```sh
-   uv pip install -r requirements.txt
+   # Install all dependencies including dev dependencies
+   uv pip install -e ".[dev]"
+
+   # Or just runtime dependencies
+   uv pip install -e .
    ```
 
-4. Run migrations:
+5. Run migrations:
 
    ```sh
-   uv run python manage.py makemigrations
-   uv run python manage.py migrate
+   cd dashboard_project
+   python manage.py makemigrations
+   python manage.py migrate
    ```
 
-5. Create a superuser:
+6. Create a superuser:
 
    ```sh
-   uv run python manage.py createsuperuser
+   python manage.py createsuperuser
    ```
 
-6. Run the development server:
+7. Run the development server:
 
    ```sh
-   uv run python manage.py runserver
+   python manage.py runserver
    ```
 
-7. Access the application at <http://127.0.0.1:8000/>
+8. Access the application at <http://127.0.0.1:8000/>
+
+### Development Workflow with UV
+
+UV offers several advantages over traditional pip, including faster dependency resolution and installation:
+
+1. Running linting and formatting:
+
+   ```sh
+   # Using the convenience script
+   ./.scripts/lint.sh
+
+   # Or directly
+   uv run -m ruff check dashboard_project
+   uv run -m ruff format dashboard_project
+   uv run -m black dashboard_project
+   ```
+
+2. Running tests:
+
+   ```sh
+   # Using the convenience script
+   ./.scripts/test.sh
+
+   # Or directly
+   uv run -m pytest
+   ```
+
+3. Adding new dependencies:
+
+   ```sh
+   # Add to project
+   uv pip install package_name
+
+   # Then update pyproject.toml manually
+   # And update the lockfile
+   uv pip freeze > requirements.lock
+   ```
+
+4. Updating the lockfile:
+
+   ```sh
+   uv pip compile pyproject.toml -o uv.lock
+   ```
 
 ### Using Docker
 

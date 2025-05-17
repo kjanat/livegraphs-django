@@ -18,7 +18,7 @@ User = get_user_model()
 class Command(BaseCommand):
     help = "Create sample data for testing"
 
-    def handle(self, *args, **kwargs):
+    def handle(self, **_options):
         self.stdout.write("Creating sample data...")
 
         # Create admin user if it doesn't exist
@@ -45,7 +45,7 @@ class Command(BaseCommand):
                 self.stdout.write(f"Company already exists: {company.name}")
 
         # Create users for each company
-        for i, company in enumerate(companies):
+        for _i, company in enumerate(companies):
             # Company admin
             username = f"admin_{company.name.lower().replace(' ', '_')}"
             if not User.objects.filter(username=username).exists():
