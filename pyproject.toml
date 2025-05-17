@@ -17,6 +17,17 @@ dependencies = [
     "whitenoise>=6.9.0",
 ]
 
+[project.scripts]
+# Django management commands
+"manage" = "dashboard_project.manage:main"
+"runserver" = "dashboard_project.manage:main"
+"migrate" = "dashboard_project.manage:main"
+"makemigrations" = "dashboard_project.manage:main"
+"collectstatic" = "dashboard_project.manage:main"
+"createsuperuser" = "dashboard_project.manage:main"
+"shell" = "dashboard_project.manage:main"
+"test" = "dashboard_project.manage:main"
+
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [

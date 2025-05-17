@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import views
+from . import views, views_export
 
 urlpatterns = [
     path("", views.dashboard_view, name="dashboard"),
@@ -40,4 +40,6 @@ urlpatterns = [
     ),
     path("search/", views.search_chat_sessions, name="search_chat_sessions"),
     path("data-view/", views.data_view, name="data_view"),
+    # Export to CSV
+    path("export/csv/", views_export.export_chats_csv, name="export_chats_csv"),
 ]

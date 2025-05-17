@@ -1,7 +1,23 @@
 # TODO List
 
 - When I zoom into the dasboard page, the graphs don't scale/adjust to fit the window until I completely refresh the page, can we solve that?
-- Add export to CSV and PDF functionality to the dashboard.
+- Add export functionality to the dashboard:
+    - File formats:
+        - CSV
+        - Excel
+        - JSON
+        - XML
+        - HTML
+        - PDF
+    - Make the export button a dropdown with the following options:
+        - Export as CSV
+        - Export as Excel
+        - Export as JSON
+        - Export as XML
+        - Export as HTML
+        - Export as PDF
+    - Make the export data section folded by default and only show the export button.
+    - Adjust the downloaded file name to include the company name, date and time of the export.
 - Add a button to download the CSV file for the selected company.
 - Make it possible to modify the column names in the CSV file through the admin interface.
 - Add possibility to add a company logo in the admin interface.
@@ -10,4 +26,6 @@
     - URL: https://proto.notso.ai/jumbo/chats
     - Username: jumboadmin
     - Password: jumboadmin
-
+- Reduce amount of rows in the table to fit the screen.
+- Add dark mode/theming to the dashboard.
+- Add Notso AI branding to the dashboard.
