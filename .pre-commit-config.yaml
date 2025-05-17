@@ -3,6 +3,7 @@ default_install_hook_types:
   - post-checkout
   - post-merge
   - post-rewrite
+
 repos:
   # uv hooks for dependency management
   - repo: https://github.com/astral-sh/uv-pre-commit
@@ -33,18 +34,18 @@ repos:
   #   rev: 3.0.7
   #   hooks:
   #     - id: djhtml
-  #       entry: djhtml --tabwidth 4 --
-  #     - id: djcss
-  #     - id: djjs
+  #       entry: djhtml --tabwidth 4
 
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+    rev: v3.1.0
     hooks:
       - id: prettier
         types_or: [javascript, jsx, ts, tsx, css, scss, html, json, yaml, markdown]
         additional_dependencies:
           - prettier
           - prettier-plugin-jinja-template
+        # types_or: [javascript, jsx, ts, tsx, css, scss, json, yaml, markdown]
+        # exclude: '.*\.html$'
 
   # Ruff for linting and formatting
   - repo: https://github.com/astral-sh/ruff-pre-commit

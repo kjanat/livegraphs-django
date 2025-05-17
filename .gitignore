@@ -407,6 +407,7 @@ pyrightconfig.json
 *Zone.Identifier
 examples/
 **/migrations/[0-9]**.py
+package-lock.json
 
 # UV specific
 .uv/

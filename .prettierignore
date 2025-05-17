@@ -47,3 +47,6 @@ docker-compose.override.yml
 .vscode/
 *.swp
 *.swo
+
+# Ignore all SQLite3 files:
+**/*.sqlite3

@@ -1,4 +1,4 @@
-.PHONY: venv install install-dev lint test format clean run migrate makemigrations superuser setup-node format-js
+.PHONY: venv install install-dev lint test format clean run migrate makemigrations superuser setup-node
 
 # Create a virtual environment
 venv:
@@ -25,13 +25,9 @@ format:
 	uv run -m ruff format dashboard_project
 	uv run -m black dashboard_project
 
-# Format JavaScript/CSS/HTML files with Prettier
-format-js:
-	npx run format
-
 # Setup Node.js dependencies
 setup-node:
-	npm install
+	npm install --include=dev
 
 # Clean Python cache files
 clean:
@@ -45,6 +41,9 @@ clean:
 	find . -type d -name ".coverage" -exec rm -rf {} +
 	find . -type d -name "htmlcov" -exec rm -rf {} +
 	find . -type d -name ".ruff_cache" -exec rm -rf {} +
+	find . -type d -name ".mypy_cache" -exec rm -rf {} +
+	find . -type d -name ".tox" -exec rm -rf {} +
+	find . -type d -name "node_modules" -exec rm -rf {} +
 	rm -rf build/
 	rm -rf dist/
 

@@ -1,47 +1,47 @@
 {
-    "[css]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnSave": true
-    },
-    "[html]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnSave": true
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnSave": true
-    },
-    "[python]": {
-        "editor.codeActionsOnSave": {
-            "source.fixAll": "explicit",
-            "source.organizeImports": "explicit"
-        },
-        "editor.defaultFormatter": "charliermarsh.ruff",
-        "editor.formatOnSave": true
-    },
-    "[toml]": {
-        "editor.defaultFormatter": "tamasfe.even-better-toml"
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "emmet.includeLanguages": {
-        "django-html": "html",
-        "jinja-html": "html"
-    },
-    "emmet.syntaxProfiles": {
-        "html": {
-            "inline_break": 2
-        }
-    },
-    "files.associations": {
-        "*.html": "html"
-    },
-    "html.format.wrapAttributes": "auto",
-    "html.format.wrapLineLength": 100,
-    "notebook.codeActionsOnSave": {
-        "notebook.source.fixAll": "explicit",
-        "notebook.source.organizeImports": "explicit"
-    },
-    "notebook.formatOnSave.enabled": true,
-    "prettier.requireConfig": true
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[python]": {
+		"editor.codeActionsOnSave": {
+			"source.fixAll": "explicit",
+			"source.organizeImports": "explicit"
+		},
+		"editor.defaultFormatter": "charliermarsh.ruff",
+		"editor.formatOnSave": true
+	},
+	"[toml]": {
+		"editor.defaultFormatter": "tamasfe.even-better-toml"
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"emmet.includeLanguages": {
+		"django-html": "html",
+		"jinja-html": "html"
+	},
+	"emmet.syntaxProfiles": {
+		"html": {
+			"inline_break": 2
+		}
+	},
+	"files.associations": {
+		"*.html": "html"
+	},
+	"html.format.wrapAttributes": "auto",
+	"html.format.wrapLineLength": 100,
+	"notebook.codeActionsOnSave": {
+		"notebook.source.fixAll": "explicit",
+		"notebook.source.organizeImports": "explicit"
+	},
+	"notebook.formatOnSave.enabled": true,
+	"prettier.requireConfig": true
 }

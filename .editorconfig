@@ -18,8 +18,8 @@ indent_size = 4
 
 # HTML and Django/Jinja2 template files
 [*.{html,htm}]
-indent_style = tab
-indent_size = 4
+indent_size = 2
+
 # Allow prettier to format Django/Jinja templates properly
 # The following comment options can be used in individual files if needed:
 # <!-- prettier-ignore -->

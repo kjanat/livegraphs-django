@@ -91,8 +91,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+LANGUAGE_CODE = "nl"
+TIME_ZONE = "Europe/Amsterdam"
 USE_I18N = True
 USE_TZ = True
 

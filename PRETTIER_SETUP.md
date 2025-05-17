@@ -64,12 +64,12 @@ For VSCode users, install the Prettier extension and add these settings to your 
 
 ```json
 {
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"[html]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"editor.formatOnSave": true
-	},
-	"prettier.requireConfig": true
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "prettier.requireConfig": true
 }
 ```
 

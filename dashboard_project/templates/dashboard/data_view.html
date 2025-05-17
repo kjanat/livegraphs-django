@@ -1,320 +1,276 @@
 <!-- templates/dashboard/data_view.html -->
-{% extends 'base.html' %}
-{% load dashboard_extras %}
-
-{% block title %}Data View | Chat Analytics{% endblock %}
-
-{% block content %}
-	<div
-		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-	>
-		<h1 class="h2">Data View</h1>
-		<div class="btn-toolbar mb-2 mb-md-0">
-			<div class="btn-group me-2">
-				<a
-					href="{% url 'dashboard' %}"
-					class="btn btn-sm btn-outline-secondary ajax-nav-link"
-				>
-					<i class="fas fa-arrow-left"></i> Back to Dashboard
-				</a>
-				{% if selected_data_source %}
-					<a
-						href="{% url 'data_source_detail' selected_data_source.id %}"
-						class="btn btn-sm btn-outline-secondary ajax-nav-link"
-					>
-						<i class="fas fa-database"></i> View Source
-					</a>
-				{% endif %}
-			</div>
-			<div class="dropdown">
-				<button
-					class="btn btn-sm btn-outline-primary dropdown-toggle"
-					type="button"
-					id="dataViewDropdown"
-					data-bs-toggle="dropdown"
-					aria-expanded="false"
-				>
-					<i class="fas fa-filter"></i> Filter
-				</button>
-				<ul class="dropdown-menu" aria-labelledby="dataViewDropdown">
-					<li>
-						<a class="dropdown-item ajax-nav-link" href="?view=all">All Sessions</a>
-					</li>
-					<li>
-						<a class="dropdown-item ajax-nav-link" href="?view=recent"
-							>Recent Sessions</a
-						>
-					</li>
-					<li>
-						<a class="dropdown-item ajax-nav-link" href="?view=positive"
-							>Positive Sentiment</a
-						>
-					</li>
-					<li>
-						<a class="dropdown-item ajax-nav-link" href="?view=negative"
-							>Negative Sentiment</a
-						>
-					</li>
-					<li>
-						<a class="dropdown-item ajax-nav-link" href="?view=escalated"
-							>Escalated Sessions</a
-						>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-
-	<!-- Data Source Selection -->
-	<div class="row mb-4">
-		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
-					<h5 class="card-title mb-0">Data Source Selection</h5>
-				</div>
-				<div class="card-body">
-					<form method="get" class="row g-3 align-items-center filter-form">
-						<div class="col-md-6">
-							<select
-								name="data_source_id"
-								class="form-select"
-								aria-label="Select Data Source"
-							>
-								<option value="">All Data Sources</option>
-								{% for ds in data_sources %}
-									<option
-										value="{{ ds.id }}"
-										{% if selected_data_source.id == ds.id %}selected{% endif %}
-									>
-										{{ ds.name }}
-									</option>
-								{% endfor %}
-							</select>
-						</div>
-						<div class="col-md-4">
-							<select name="view" class="form-select" aria-label="Select View">
-								<option value="all" {% if view == 'all' %}selected{% endif %}>
-									All Sessions
-								</option>
-								<option value="recent" {% if view == 'recent' %}selected{% endif %}>
-									Recent Sessions
-								</option>
-								<option
-									value="positive"
-									{% if view == 'positive' %}selected{% endif %}
-								>
-									Positive Sentiment
-								</option>
-								<option
-									value="negative"
-									{% if view == 'negative' %}selected{% endif %}
-								>
-									Negative Sentiment
-								</option>
-								<option
-									value="escalated"
-									{% if view == 'escalated' %}selected{% endif %}
-								>
-									Escalated Sessions
-								</option>
-							</select>
-						</div>
-						<div class="col-md-2">
-							<button type="submit" class="btn btn-primary w-100">Apply</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Export to CSV -->
-	<div class="row mb-4">
-		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
-					<h5 class="card-title mb-0">Export Data</h5>
-				</div>
-				<div class="card-body">
-					<form
-						id="export-form"
-						method="get"
-						action="{% url 'export_chats_csv' %}"
-						class="row g-3"
-					>
-						<!-- Pass current filters to export -->
-						<input
-							type="hidden"
-							name="data_source_id"
-							value="{{ selected_data_source.id }}"
-						/>
-						<input type="hidden" name="view" value="{{ view }}" />
-
-						<div class="col-md-3">
-							<label for="start_date" class="form-label">Start Date</label>
-							<input
-								type="date"
-								name="start_date"
-								id="start_date"
-								class="form-control"
-							/>
-						</div>
-						<div class="col-md-3">
-							<label for="end_date" class="form-label">End Date</label>
-							<input type="date" name="end_date" id="end_date" class="form-control" />
-						</div>
-						<div class="col-md-3">
-							<label for="country" class="form-label">Country</label>
-							<input
-								type="text"
-								name="country"
-								id="country"
-								class="form-control"
-								placeholder="Country"
-							/>
-						</div>
-						<div class="col-md-3">
-							<label for="sentiment" class="form-label">Sentiment</label>
-							<select name="sentiment" id="sentiment" class="form-select">
-								<option value="">All</option>
-								<option value="positive">Positive</option>
-								<option value="negative">Negative</option>
-								<option value="neutral">Neutral</option>
-							</select>
-						</div>
-						<div class="col-md-3">
-							<label for="escalated" class="form-label">Escalated</label>
-							<select name="escalated" id="escalated" class="form-select">
-								<option value="">All</option>
-								<option value="true">Yes</option>
-								<option value="false">No</option>
-							</select>
-						</div>
-						<div class="col-md-3 d-flex align-items-end">
-							<button type="submit" class="btn btn-success w-100">
-								<i class="fas fa-file-csv me-1"></i> Export to CSV
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Data Table -->
-	<div class="row">
-		<div class="col-12">
-			<div class="card">
-				<div class="card-header d-flex justify-content-between align-items-center">
-					<h5 class="card-title mb-0">
-						Chat Sessions
-						{% if selected_data_source %}
-							for {{ selected_data_source.name }}
-						{% endif %}
-						{% if view != 'all' %}
-							({{ view|title }})
-						{% endif %}
-					</h5>
-					<span class="badge bg-primary">{{ page_obj.paginator.count }} sessions</span>
-				</div>
-				<div class="card-body">
-					<!-- Loading spinner shown during AJAX requests -->
-					<div id="ajax-loading-spinner" class="text-center py-4 d-none">
-						<div class="spinner-border text-primary" role="status">
-							<span class="visually-hidden">Loading...</span>
-						</div>
-						<p class="mt-2">Loading data...</p>
-					</div>
-
-					<!-- Data table container that will be updated via AJAX -->
-					<div id="ajax-content-container">
-						{% include "dashboard/partials/data_table.html" %}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Data Summary -->
-	{% if page_obj %}
-		<div class="row mt-4">
-			<div class="col-12">
-				<div class="card">
-					<div class="card-header">
-						<h5 class="card-title mb-0">Summary</h5>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col-md-3">
-								<div class="card stats-card bg-light">
-									<div class="card-body">
-										<h6 class="card-title">Total Sessions</h6>
-										<h3>{{ page_obj.paginator.count }}</h3>
-										<p>Chat conversations</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="card stats-card bg-light">
-									<div class="card-body">
-										<h6 class="card-title">Avg Response Time</h6>
-										<h3>{{ avg_response_time|floatformat:2 }}s</h3>
-										<p>Average response</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="card stats-card bg-light">
-									<div class="card-body">
-										<h6 class="card-title">Avg Messages</h6>
-										<h3>{{ avg_messages|floatformat:1 }}</h3>
-										<p>Per conversation</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="card stats-card bg-light">
-									<div class="card-body">
-										<h6 class="card-title">Escalation Rate</h6>
-										<h3>{{ escalation_rate|floatformat:1 }}%</h3>
-										<p>Escalated sessions</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	{% endif %}
+{% extends 'base.html' %} {% load dashboard_extras %}
+{% block title %}
+  Data View | Chat Analytics
 {% endblock %}
+{% block content %}
+  <div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+  >
+    <h1 class="h2">Data View</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary ajax-nav-link">
+          <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        {% if selected_data_source %}
+          <a
+            href="{% url 'data_source_detail' selected_data_source.id %}"
+            class="btn btn-sm btn-outline-secondary ajax-nav-link"
+          >
+            <i class="fas fa-database"></i> View Source
+          </a>
+        {% endif %}
+      </div>
+      <div class="dropdown">
+        <button
+          class="btn btn-sm btn-outline-primary dropdown-toggle"
+          type="button"
+          id="dataViewDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fas fa-filter"></i> Filter
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dataViewDropdown">
+          <li>
+            <a class="dropdown-item ajax-nav-link" href="?view=all">All Sessions</a>
+          </li>
+          <li>
+            <a class="dropdown-item ajax-nav-link" href="?view=recent">Recent Sessions</a>
+          </li>
+          <li>
+            <a class="dropdown-item ajax-nav-link" href="?view=positive">Positive Sentiment</a>
+          </li>
+          <li>
+            <a class="dropdown-item ajax-nav-link" href="?view=negative">Negative Sentiment</a>
+          </li>
+          <li>
+            <a class="dropdown-item ajax-nav-link" href="?view=escalated">Escalated Sessions</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
+  <!-- Data Source Selection -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Data Source Selection</h5>
+        </div>
+        <div class="card-body">
+          <form method="get" class="row g-3 align-items-center filter-form">
+            <div class="col-md-6">
+              <select name="data_source_id" class="form-select" aria-label="Select Data Source">
+                <option value="">All Data Sources</option>
+                {% for ds in data_sources %}
+                  <option
+                    value="{{ ds.id }}"
+                    {% if selected_data_source.id == ds.id %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ ds.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <select name="view" class="form-select" aria-label="Select View">
+                <option value="all" {% if view == 'all' %}selected{% endif %}>All Sessions</option>
+                <option value="recent" {% if view == 'recent' %}selected{% endif %}>
+                  Recent Sessions
+                </option>
+                <option value="positive" {% if view == 'positive' %}selected{% endif %}>
+                  Positive Sentiment
+                </option>
+                <option value="negative" {% if view == 'negative' %}selected{% endif %}>
+                  Negative Sentiment
+                </option>
+                <option value="escalated" {% if view == 'escalated' %}selected{% endif %}>
+                  Escalated Sessions
+                </option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary w-100">Apply</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export to CSV -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Export Data</h5>
+        </div>
+        <div class="card-body">
+          <form id="export-form" method="get" action="{% url 'export_chats_csv' %}" class="row g-3">
+            <!-- Pass current filters to export -->
+            <input type="hidden" name="data_source_id" value="{{ selected_data_source.id }}" />
+            <input type="hidden" name="view" value="{{ view }}" />
+
+            <div class="col-md-3">
+              <label for="start_date" class="form-label">Start Date</label>
+              <input type="date" name="start_date" id="start_date" class="form-control" />
+            </div>
+            <div class="col-md-3">
+              <label for="end_date" class="form-label">End Date</label>
+              <input type="date" name="end_date" id="end_date" class="form-control" />
+            </div>
+            <div class="col-md-3">
+              <label for="country" class="form-label">Country</label>
+              <input
+                type="text"
+                name="country"
+                id="country"
+                class="form-control"
+                placeholder="Country"
+              />
+            </div>
+            <div class="col-md-3">
+              <label for="sentiment" class="form-label">Sentiment</label>
+              <select name="sentiment" id="sentiment" class="form-select">
+                <option value="">All</option>
+                <option value="positive">Positive</option>
+                <option value="negative">Negative</option>
+                <option value="neutral">Neutral</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="escalated" class="form-label">Escalated</label>
+              <select name="escalated" id="escalated" class="form-select">
+                <option value="">All</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button type="submit" class="btn btn-success w-100">
+                <i class="fas fa-file-csv me-1"></i> Export to CSV
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">
+            Chat Sessions
+            {% if selected_data_source %}
+              for {{ selected_data_source.name }}
+            {% endif %}
+            {% if view != 'all' %}({{ view|title }}){% endif %}
+          </h5>
+          <span class="badge bg-primary">{{ page_obj.paginator.count }} sessions</span>
+        </div>
+        <div class="card-body">
+          <!-- Loading spinner shown during AJAX requests -->
+          <div id="ajax-loading-spinner" class="text-center py-4 d-none">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading data...</p>
+          </div>
+
+          <!-- Data table container that will be updated via AJAX -->
+          <div id="ajax-content-container">{% include "dashboard/partials/data_table.html" %}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Summary -->
+  {% if page_obj %}
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Summary</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="card stats-card bg-light">
+                  <div class="card-body">
+                    <h6 class="card-title">Total Sessions</h6>
+                    <h3>{{ page_obj.paginator.count }}</h3>
+                    <p>Chat conversations</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card stats-card bg-light">
+                  <div class="card-body">
+                    <h6 class="card-title">Avg Response Time</h6>
+                    <h3>{{ avg_response_time|floatformat:2 }}s</h3>
+                    <p>Average response</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card stats-card bg-light">
+                  <div class="card-body">
+                    <h6 class="card-title">Avg Messages</h6>
+                    <h3>{{ avg_messages|floatformat:1 }}</h3>
+                    <p>Per conversation</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card stats-card bg-light">
+                  <div class="card-body">
+                    <h6 class="card-title">Escalation Rate</h6>
+                    <h3>{{ escalation_rate|floatformat:1 }}%</h3>
+                    <p>Escalated sessions</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
 {% block extra_js %}
-	<script>
-		// Function to update the summary section with new data
-		function updateSummary(data) {
-			if (document.querySelector(".stats-card h3:nth-of-type(1)")) {
-				document.querySelector(".stats-card h3:nth-of-type(1)").textContent =
-					data.page_obj.paginator.count;
-			}
-			if (document.querySelector(".stats-card h3:nth-of-type(2)")) {
-				document.querySelector(".stats-card h3:nth-of-type(2)").textContent =
-					data.avg_response_time !== null && data.avg_response_time !== undefined
-						? data.avg_response_time.toFixed(2) + "s"
-						: "0.00s";
-			}
-			if (document.querySelector(".stats-card h3:nth-of-type(3)")) {
-				document.querySelector(".stats-card h3:nth-of-type(3)").textContent =
-					data.avg_messages !== null && data.avg_messages !== undefined
-						? data.avg_messages.toFixed(1)
-						: "0.0";
-			}
-			if (document.querySelector(".stats-card h3:nth-of-type(4)")) {
-				document.querySelector(".stats-card h3:nth-of-type(4)").textContent =
-					data.escalation_rate !== null && data.escalation_rate !== undefined
-						? data.escalation_rate.toFixed(1) + "%"
-						: "0.0%";
-			}
-		}
-	</script>
+  <script>
+    // Function to update the summary section with new data
+    function updateSummary(data) {
+      if (document.querySelector(".stats-card h3:nth-of-type(1)")) {
+        document.querySelector(".stats-card h3:nth-of-type(1)").textContent =
+          data.page_obj.paginator.count;
+      }
+      if (document.querySelector(".stats-card h3:nth-of-type(2)")) {
+        document.querySelector(".stats-card h3:nth-of-type(2)").textContent =
+          data.avg_response_time !== null && data.avg_response_time !== undefined
+            ? data.avg_response_time.toFixed(2) + "s"
+            : "0.00s";
+      }
+      if (document.querySelector(".stats-card h3:nth-of-type(3)")) {
+        document.querySelector(".stats-card h3:nth-of-type(3)").textContent =
+          data.avg_messages !== null && data.avg_messages !== undefined
+            ? data.avg_messages.toFixed(1)
+            : "0.0";
+      }
+      if (document.querySelector(".stats-card h3:nth-of-type(4)")) {
+        document.querySelector(".stats-card h3:nth-of-type(4)").textContent =
+          data.escalation_rate !== null && data.escalation_rate !== undefined
+            ? data.escalation_rate.toFixed(1) + "%"
+            : "0.0%";
+      }
+    }
+  </script>
 {% endblock %}

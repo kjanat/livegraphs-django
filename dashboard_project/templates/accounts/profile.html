@@ -1,213 +1,187 @@
 <!-- templates/accounts/profile.html -->
 {% extends 'base.html' %}
-
 {% block title %}My Profile | Chat Analytics{% endblock %}
-
 {% block content %}
-	<div
-		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-	>
-		<h1 class="h2">My Profile</h1>
-		<div class="btn-toolbar mb-2 mb-md-0">
-			<a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary">
-				<i class="fas fa-arrow-left"></i> Back to Dashboard
-			</a>
-		</div>
-	</div>
+  <div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+  >
+    <h1 class="h2">My Profile</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
+    </div>
+  </div>
 
-	<div class="row">
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h5 class="card-title mb-0">Account Information</h5>
-				</div>
-				<div class="card-body">
-					<div class="row mb-3">
-						<div class="col-md-4 fw-bold">Username:</div>
-						<div class="col-md-8">{{ user.username }}</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-4 fw-bold">Email:</div>
-						<div class="col-md-8">{{ user.email }}</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-4 fw-bold">Company:</div>
-						<div class="col-md-8">
-							{% if user.company %}
-								{{ user.company.name }}
-							{% else %}
-								<span class="text-muted">Not assigned to a company</span>
-							{% endif %}
-						</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-4 fw-bold">Role:</div>
-						<div class="col-md-8">
-							{% if user.is_staff %}
-								<span class="badge bg-danger">Admin</span>
-							{% elif user.is_company_admin %}
-								<span class="badge bg-primary">Company Admin</span>
-							{% else %}
-								<span class="badge bg-secondary">User</span>
-							{% endif %}
-						</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-4 fw-bold">Last Login:</div>
-						<div class="col-md-8">{{ user.last_login|date:"F d, Y H:i" }}</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-4 fw-bold">Date Joined:</div>
-						<div class="col-md-8">{{ user.date_joined|date:"F d, Y H:i" }}</div>
-					</div>
-				</div>
-				<div class="card-footer">
-					<a href="{% url 'password_change' %}" class="btn btn-primary"
-						>Change Password</a
-					>
-				</div>
-			</div>
-		</div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Account Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Username:</div>
+            <div class="col-md-8">{{ user.username }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Email:</div>
+            <div class="col-md-8">{{ user.email }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Company:</div>
+            <div class="col-md-8">
+              {% if user.company %}
+                {{ user.company.name }}
+              {% else %}
+                <span class="text-muted">Not assigned to a company</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Role:</div>
+            <div class="col-md-8">
+              {% if user.is_staff %}
+                <span class="badge bg-danger">Admin</span>
+              {% elif user.is_company_admin %}
+                <span class="badge bg-primary">Company Admin</span>
+              {% else %}
+                <span class="badge bg-secondary">User</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Last Login:</div>
+            <div class="col-md-8">{{ user.last_login|date:"F d, Y H:i" }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Date Joined:</div>
+            <div class="col-md-8">{{ user.date_joined|date:"F d, Y H:i" }}</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="{% url 'password_change' %}" class="btn btn-primary">Change Password</a>
+        </div>
+      </div>
+    </div>
 
-		{% if user.company %}
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-header">
-						<h5 class="card-title mb-0">Company Information</h5>
-					</div>
-					<div class="card-body">
-						<div class="row mb-3">
-							<div class="col-md-4 fw-bold">Company Name:</div>
-							<div class="col-md-8">{{ user.company.name }}</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col-md-4 fw-bold">Description:</div>
-							<div class="col-md-8">
-								{{ user.company.description|default:"No description available." }}
-							</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col-md-4 fw-bold">Created:</div>
-							<div class="col-md-8">{{ user.company.created_at|date:"F d, Y" }}</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col-md-4 fw-bold">Total Employees:</div>
-							<div class="col-md-8">{{ user.company.employees.count }}</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col-md-4 fw-bold">Data Sources:</div>
-							<div class="col-md-8">{{ user.company.data_sources.count }}</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		{% endif %}
-	</div>
+    {% if user.company %}
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Company Information</h5>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-4 fw-bold">Company Name:</div>
+              <div class="col-md-8">{{ user.company.name }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-4 fw-bold">Description:</div>
+              <div class="col-md-8">
+                {{ user.company.description|default:"No description available." }}
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-4 fw-bold">Created:</div>
+              <div class="col-md-8">{{ user.company.created_at|date:"F d, Y" }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-4 fw-bold">Total Employees:</div>
+              <div class="col-md-8">{{ user.company.employees.count }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-4 fw-bold">Data Sources:</div>
+              <div class="col-md-8">{{ user.company.data_sources.count }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
 
-	{% if user.is_company_admin or user.is_staff %}
-		<div class="row mt-4">
-			<div class="col-12">
-				<div class="card">
-					<div class="card-header">
-						<h5 class="card-title mb-0">Admin Actions</h5>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							{% if user.is_staff %}
-								<div class="col-md-4 mb-3">
-									<div class="card h-100">
-										<div class="card-body text-center">
-											<h5 class="card-title">Manage Users</h5>
-											<p class="card-text">
-												Manage users and assign them to companies.
-											</p>
-											<a
-												href="{% url 'admin:accounts_customuser_changelist' %}"
-												class="btn btn-primary"
-												>Manage Users</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 mb-3">
-									<div class="card h-100">
-										<div class="card-body text-center">
-											<h5 class="card-title">Manage Companies</h5>
-											<p class="card-text">
-												Create and edit companies in the system.
-											</p>
-											<a
-												href="{% url 'admin:accounts_company_changelist' %}"
-												class="btn btn-primary"
-												>Manage Companies</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 mb-3">
-									<div class="card h-100">
-										<div class="card-body text-center">
-											<h5 class="card-title">Admin Dashboard</h5>
-											<p class="card-text">Go to the full admin dashboard.</p>
-											<a
-												href="{% url 'admin:index' %}"
-												class="btn btn-primary"
-												>Admin Dashboard</a
-											>
-										</div>
-									</div>
-								</div>
-							{% elif user.is_company_admin %}
-								<div class="col-md-4 mb-3">
-									<div class="card h-100">
-										<div class="card-body text-center">
-											<h5 class="card-title">Manage Dashboards</h5>
-											<p class="card-text">
-												Create and edit dashboards for your company.
-											</p>
-											<a
-												href="{% url 'create_dashboard' %}"
-												class="btn btn-primary"
-												>Manage Dashboards</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 mb-3">
-									<div class="card h-100">
-										<div class="card-body text-center">
-											<h5 class="card-title">Upload Data</h5>
-											<p class="card-text">
-												Upload and manage data sources for analysis.
-											</p>
-											<a
-												href="{% url 'upload_data' %}"
-												class="btn btn-primary"
-												>Upload Data</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 mb-3">
-									<div class="card h-100">
-										<div class="card-body text-center">
-											<h5 class="card-title">Search Sessions</h5>
-											<p class="card-text">
-												Search and analyze chat sessions.
-											</p>
-											<a
-												href="{% url 'search_chat_sessions' %}"
-												class="btn btn-primary"
-												>Search Sessions</a
-											>
-										</div>
-									</div>
-								</div>
-							{% endif %}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	{% endif %}
+  {% if user.is_company_admin or user.is_staff %}
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Admin Actions</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              {% if user.is_staff %}
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">Manage Users</h5>
+                      <p class="card-text">Manage users and assign them to companies.</p>
+                      <a
+                        href="{% url 'admin:accounts_customuser_changelist' %}"
+                        class="btn btn-primary"
+                        >Manage Users</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">Manage Companies</h5>
+                      <p class="card-text">Create and edit companies in the system.</p>
+                      <a
+                        href="{% url 'admin:accounts_company_changelist' %}"
+                        class="btn btn-primary"
+                        >Manage Companies</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">Admin Dashboard</h5>
+                      <p class="card-text">Go to the full admin dashboard.</p>
+                      <a href="{% url 'admin:index' %}" class="btn btn-primary">Admin Dashboard</a>
+                    </div>
+                  </div>
+                </div>
+              {% elif user.is_company_admin %}
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">Manage Dashboards</h5>
+                      <p class="card-text">Create and edit dashboards for your company.</p>
+                      <a href="{% url 'create_dashboard' %}" class="btn btn-primary"
+                        >Manage Dashboards</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">Upload Data</h5>
+                      <p class="card-text">Upload and manage data sources for analysis.</p>
+                      <a href="{% url 'upload_data' %}" class="btn btn-primary">Upload Data</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">Search Sessions</h5>
+                      <p class="card-text">Search and analyze chat sessions.</p>
+                      <a href="{% url 'search_chat_sessions' %}" class="btn btn-primary"
+                        >Search Sessions</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}
