@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export UV_LINK_MODE=copy;
+
 sudo apt update
 sudo apt full-upgrade -y
 sudo apt autoremove -y;
@@ -72,6 +74,7 @@ fi
 if [ -f ~/.cache/oh-my-posh-completion.bash ]; then
   source ~/.cache/oh-my-posh-completion.bash
 fi
+
 export UV_LINK_MODE=copy;
 
 EOF

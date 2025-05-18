@@ -104,10 +104,10 @@ run-redis:
 
 # Start all development services (web, redis, celery, celery-beat)
 run-all:
-	make run-redis & \
-	make run & \
-	make celery & \
-	make celery-beat
+	foreman start
+
+procfile:
+	foreman start
 
 # Test Celery task
 test-celery:
@@ -122,6 +122,3 @@ init-data-integration:
 # Setup development environment
 setup-dev: venv install-dev migrate create_default_datasource
 	@echo "Development environment setup complete"
-
-procfile:
-	foreman start

@@ -6,17 +6,17 @@
 
 version: 2
 updates:
-  - package-ecosystem: devcontainers
-    directory: /
+  - package-ecosystem: "devcontainers"
+    directory: "/"
     schedule:
-      interval: weekly
-      day: tuesday
-      time: 03:00
-      timezone: Europe/Amsterdam
-  - package-ecosystem: uv
-    directory: /
+      interval: "weekly"
+      day: "tuesday"
+      time: "03:00"
+      timezone: "Europe/Amsterdam"
+  - package-ecosystem: "uv"
+    directory: "/"
     schedule:
-      interval: weekly
-      day: tuesday
-      time: 03:00
-      timezone: Europe/Amsterdam
+      interval: "weekly"
+      day: "tuesday"
+      time: "03:00"
+      timezone: "Europe/Amsterdam"
