@@ -406,7 +406,7 @@ pyrightconfig.json
 # Local environment variables
 *Zone.Identifier
 examples/
-**/migrations/[0-9]**.py
+# **/migrations/[0-9]**.py
 package-lock.json
 
 # UV specific
@@ -417,3 +417,7 @@ package-lock.json
 .vscode/
 .idea/
 .pyright/
+
+# Local database files
+*.rdb
+*.sqlite

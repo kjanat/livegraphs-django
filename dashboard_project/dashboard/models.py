@@ -5,11 +5,23 @@ from django.db import models
 
 
 class DataSource(models.Model):
-    """Model for uploaded data sources (CSV files)"""
+    """Model for data sources (CSV files or external API data)"""
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    file = models.FileField(upload_to="data_sources/")
+    file = models.FileField(
+        upload_to="data_sources/",
+        blank=True,
+        null=True,
+        help_text="Upload a CSV file or leave empty if using an external data source",
+    )
+    external_source = models.ForeignKey(
+        "data_integration.ExternalDataSource",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        help_text="Link to an external data source",
+    )
     uploaded_at = models.DateTimeField(auto_now_add=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="data_sources")
 
@@ -41,6 +53,9 @@ class ChatSession(models.Model):
 
     def __str__(self):
         return f"Session {self.session_id}"
+
+    class Meta:
+        unique_together = ("session_id", "data_source")
 
 
 class Dashboard(models.Model):

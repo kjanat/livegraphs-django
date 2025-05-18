@@ -103,60 +103,86 @@
     </div>
   </div>
 
-  <!-- Export to CSV -->
+  <!-- Export to CSV - Collapsible Section -->
   <div class="row mb-4">
     <div class="col-12">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="card-title mb-0">Export Data</h5>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#exportCollapse"
+            aria-expanded="false"
+            aria-controls="exportCollapse"
+          >
+            <i class="fas fa-chevron-down"></i>
+          </button>
         </div>
-        <div class="card-body">
-          <form id="export-form" method="get" action="{% url 'export_chats_csv' %}" class="row g-3">
-            <!-- Pass current filters to export -->
-            <input type="hidden" name="data_source_id" value="{{ selected_data_source.id }}" />
-            <input type="hidden" name="view" value="{{ view }}" />
+        <div class="collapse" id="exportCollapse">
+          <div class="card-body">
+            <form
+              id="export-form"
+              method="get"
+              action="{% url 'export_chats_csv' %}"
+              class="row g-3"
+            >
+              <!-- Pass current filters to export -->
+              <input type="hidden" name="data_source_id" value="{{ selected_data_source.id }}" />
+              <input type="hidden" name="view" value="{{ view }}" />
 
-            <div class="col-md-3">
-              <label for="start_date" class="form-label">Start Date</label>
-              <input type="date" name="start_date" id="start_date" class="form-control" />
-            </div>
-            <div class="col-md-3">
-              <label for="end_date" class="form-label">End Date</label>
-              <input type="date" name="end_date" id="end_date" class="form-control" />
-            </div>
-            <div class="col-md-3">
-              <label for="country" class="form-label">Country</label>
-              <input
-                type="text"
-                name="country"
-                id="country"
-                class="form-control"
-                placeholder="Country"
-              />
-            </div>
-            <div class="col-md-3">
-              <label for="sentiment" class="form-label">Sentiment</label>
-              <select name="sentiment" id="sentiment" class="form-select">
-                <option value="">All</option>
-                <option value="positive">Positive</option>
-                <option value="negative">Negative</option>
-                <option value="neutral">Neutral</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label for="escalated" class="form-label">Escalated</label>
-              <select name="escalated" id="escalated" class="form-select">
-                <option value="">All</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-              </select>
-            </div>
-            <div class="col-md-3 d-flex align-items-end">
-              <button type="submit" class="btn btn-success w-100">
-                <i class="fas fa-file-csv me-1"></i> Export to CSV
-              </button>
-            </div>
-          </form>
+              <div class="col-md-3">
+                <label for="start_date" class="form-label">Start Date</label>
+                <input type="date" name="start_date" id="start_date" class="form-control" />
+              </div>
+              <div class="col-md-3">
+                <label for="end_date" class="form-label">End Date</label>
+                <input type="date" name="end_date" id="end_date" class="form-control" />
+              </div>
+              <div class="col-md-3">
+                <label for="country" class="form-label">Country</label>
+                <input
+                  type="text"
+                  name="country"
+                  id="country"
+                  class="form-control"
+                  placeholder="Country"
+                />
+              </div>
+              <div class="col-md-3">
+                <label for="sentiment" class="form-label">Sentiment</label>
+                <select name="sentiment" id="sentiment" class="form-select">
+                  <option value="">All</option>
+                  <option value="positive">Positive</option>
+                  <option value="negative">Negative</option>
+                  <option value="neutral">Neutral</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label for="escalated" class="form-label">Escalated</label>
+                <select name="escalated" id="escalated" class="form-select">
+                  <option value="">All</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+              <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-success w-100">
+                  <i class="fas fa-file-csv me-1"></i> Export to CSV
+                </button>
+              </div>
+              <div class="col-md-3 d-flex align-items-end">
+                <button
+                  type="submit"
+                  class="btn btn-info w-100"
+                  formaction="{% url 'export_chats_json' %}"
+                >
+                  <i class="fas fa-file-code me-1"></i> Export to JSON
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

@@ -11,14 +11,17 @@ services:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
     ports:
-      - "8000:8000"
+      - 8000:8000
     environment:
       - DEBUG=0
       - SECRET_KEY=your_secret_key_here
       - ALLOWED_HOSTS=localhost,127.0.0.1
       - DJANGO_SETTINGS_MODULE=dashboard_project.settings
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:13
@@ -29,12 +32,52 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=dashboard_db
     ports:
-      - "5432:5432"
+      - 5432:5432
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  celery:
+    build: .
+    command: celery -A dashboard_project worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=0
+      - DJANGO_SETTINGS_MODULE=dashboard_project.settings
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+      - web
+
+  celery-beat:
+    build: .
+    command: celery -A dashboard_project beat --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=0
+      - DJANGO_SETTINGS_MODULE=dashboard_project.settings
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+      - web
 
   nginx:
     image: nginx:latest
     ports:
-      - "80:80"
+      - 80:80
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - static_volume:/app/staticfiles
@@ -44,5 +87,6 @@ services:
 
 volumes:
   postgres_data:
+  redis_data:
   static_volume:
   media_volume:

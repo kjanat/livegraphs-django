@@ -1,0 +1,3 @@
+server: cd dashboard_project && CELERY_BROKER_URL=redis://localhost:6379/0 CELERY_RESULT_BACKEND=redis://localhost:6379/0 UV_LINK_MODE=copy uv run python manage.py runserver 8001
+celery: cd dashboard_project && CELERY_BROKER_URL=redis://localhost:6379/0 CELERY_RESULT_BACKEND=redis://localhost:6379/0 UV_LINK_MODE=copy uv run celery -A dashboard_project worker --loglevel=info
+celery-beat: cd dashboard_project && CELERY_BROKER_URL=redis://localhost:6379/0 CELERY_RESULT_BACKEND=redis://localhost:6379/0 UV_LINK_MODE=copy uv run celery -A dashboard_project beat --scheduler django_celery_beat.schedulers:DatabaseScheduler

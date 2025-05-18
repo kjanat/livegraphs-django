@@ -31,7 +31,15 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dashboard_project.settings")
 
     # For specific commands, insert the command name at the start of argv
-    if cmd_name in ["runserver", "migrate", "makemigrations", "collectstatic", "createsuperuser", "shell", "test"]:
+    if cmd_name in [
+        "runserver",
+        "migrate",
+        "makemigrations",
+        "collectstatic",
+        "createsuperuser",
+        "shell",
+        "test",
+    ]:
         sys.argv.insert(1, cmd_name)
 
     # Execute the Django management command

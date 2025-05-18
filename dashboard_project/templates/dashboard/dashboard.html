@@ -62,6 +62,19 @@
           </li>
         </ul>
       </div>
+
+      {% if user.is_superuser %}
+        <form
+          method="post"
+          action="{% url 'data_integration:manual_data_refresh' %}"
+          class="ms-2 d-inline"
+        >
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-info">
+            <i class="fas fa-sync"></i> Refresh Data
+          </button>
+        </form>
+      {% endif %}
     </div>
   </div>
 

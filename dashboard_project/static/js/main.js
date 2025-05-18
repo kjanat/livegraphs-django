@@ -148,5 +148,99 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    window.addEventListener("resize", handleSidebarOnResize);
+    window.addEventListener("resize", handleSidebarOnResize); // Theme toggling functionality
+    function setTheme(theme, isUserPreference = false) {
+        console.log("Setting theme to:", theme, "User preference:", isUserPreference);
+
+        // Update the HTML attribute that controls theme
+        document.documentElement.setAttribute("data-bs-theme", theme);
+
+        // Save the theme preference to localStorage
+        localStorage.setItem("theme", theme);
+
+        // If this was a user choice (from the toggle button), record that fact
+        if (isUserPreference) {
+            localStorage.setItem("userPreferredTheme", "true");
+        }
+
+        // Update toggle button icon
+        const themeToggle = document.getElementById("theme-toggle");
+        if (themeToggle) {
+            const icon = themeToggle.querySelector("i");
+            if (theme === "dark") {
+                icon.classList.remove("fa-moon");
+                icon.classList.add("fa-sun");
+                themeToggle.setAttribute("title", "Switch to light mode");
+                themeToggle.setAttribute("aria-label", "Switch to light mode");
+            } else {
+                icon.classList.remove("fa-sun");
+                icon.classList.add("fa-moon");
+                themeToggle.setAttribute("title", "Switch to dark mode");
+                themeToggle.setAttribute("aria-label", "Switch to dark mode");
+            }
+        }
+
+        // If we're on a page with charts, refresh them to match the theme
+        if (typeof window.refreshAllCharts === "function") {
+            console.log("Calling refresh charts from theme toggle");
+            // Add a small delay to ensure DOM updates have completed
+            setTimeout(window.refreshAllCharts, 100);
+        }
+    }
+
+    // Check if the user has a system preference for dark mode
+    function getSystemPreference() {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+
+    // Initialize theme based on saved preference or system setting
+    function initializeTheme() {
+        // Check if the user has explicitly set a preference
+        const hasUserPreference = localStorage.getItem("userPreferredTheme") === "true";
+        const savedTheme = localStorage.getItem("theme");
+        const systemTheme = getSystemPreference();
+
+        console.log("Theme initialization:", {
+            hasUserPreference,
+            savedTheme,
+            systemTheme,
+        });
+
+        // Use saved theme if it exists and was set by user
+        // Otherwise, use system preference
+        if (hasUserPreference && savedTheme) {
+            setTheme(savedTheme);
+        } else {
+            // No user preference, use system preference
+            setTheme(systemTheme);
+            // Clear any saved theme to ensure it uses system preference
+            localStorage.removeItem("userPreferredTheme");
+        }
+    }
+
+    // Initialize theme on page load
+    initializeTheme();
+
+    // Listen for system preference changes
+    const colorSchemeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    colorSchemeMediaQuery.addEventListener("change", (e) => {
+        // Only update theme based on system if user hasn't set a preference
+        const hasUserPreference = localStorage.getItem("userPreferredTheme") === "true";
+        console.log("System preference changed. Following system?", !hasUserPreference);
+
+        if (!hasUserPreference) {
+            setTheme(e.matches ? "dark" : "light");
+        }
+    });
+
+    // Theme toggle button functionality
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+        themeToggle.addEventListener("click", function () {
+            const currentTheme = document.documentElement.getAttribute("data-bs-theme") || "light";
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            console.log("Manual theme toggle from", currentTheme, "to", newTheme);
+            setTheme(newTheme, true); // true indicates this is a user preference
+        });
+    }
 });

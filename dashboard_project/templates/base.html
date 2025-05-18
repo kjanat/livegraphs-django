@@ -71,6 +71,17 @@
           </ul>
 
           <div class="d-flex">
+            <!-- Theme Toggle Button -->
+            <button
+              id="theme-toggle"
+              class="btn btn-outline-light me-2"
+              type="button"
+              aria-label="Toggle theme"
+              title="Toggle light/dark mode"
+            >
+              <i class="fas fa-moon"></i>
+            </button>
+
             {% if user.is_authenticated %}
               <div class="dropdown">
                 <button
@@ -116,7 +127,7 @@
         <!-- Sidebar -->
         <nav
           id="sidebarMenu"
-          class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse sticky-top h-100 p-0"
+          class="col-md-3 col-lg-2 d-md-block sidebar collapse sticky-top h-100 p-0"
         >
           <div class="sidebar-sticky pt-3">
             {% block sidebar %}

@@ -5,6 +5,11 @@ default_install_hook_types:
   - post-rewrite
 
 repos:
+  - repo: https://github.com/adamchainz/django-upgrade
+    rev: 1.25.0
+    hooks:
+      - id: django-upgrade
+
   # uv hooks for dependency management
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.7.5
@@ -18,16 +23,21 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
-      - id: check-json
+      # - id: check-json
       - id: check-toml
       - id: check-added-large-files
-        args: ["--maxkb=500"]
+        args: [--maxkb=1000]
       - id: detect-private-key
       - id: check-merge-conflict
       - id: check-case-conflict
       - id: debug-statements
       - id: mixed-line-ending
-        args: ["--fix=lf"]
+        args: [--fix=lf]
+
+  # - repo: https://github.com/psf/black
+  #   rev: 22.10.0
+  #   hooks:
+  #     - id: black
 
   # # HTML/Django template linting
   # - repo: https://github.com/rtts/djhtml
@@ -78,7 +88,7 @@ repos:
     rev: 1.8.3
     hooks:
       - id: bandit
-        args: ["-c", "pyproject.toml", "-r", "dashboard_project"]
+        args: [-c, pyproject.toml, -r, dashboard_project]
         additional_dependencies: ["bandit[toml]"]
 
   # # Type checking

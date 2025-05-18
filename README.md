@@ -74,13 +74,57 @@ A Django application that creates an analytics dashboard for chat session data. 
    python manage.py createsuperuser
    ```
 
-7. Run the development server:
+7. Set up environment variables:
+
+   ```sh
+   # Copy the sample .env file
+   cp .env.sample .env
+
+   # Edit the .env file with your credentials
+   nano .env
+   ```
+
+   Be sure to update:
+
+   - `EXTERNAL_API_USERNAME` and `EXTERNAL_API_PASSWORD` for the data integration API
+   - `DJANGO_SECRET_KEY` for production environments
+   - Redis URL if using a different configuration for Celery
+
+8. Start Celery for background tasks:
+
+   ```sh
+   # In a separate terminal
+   cd dashboard_project
+   celery -A dashboard_project worker --loglevel=info
+
+   # Start the Celery Beat scheduler in another terminal
+   cd dashboard_project
+   celery -A dashboard_project beat --scheduler django_celery_beat.schedulers:DatabaseScheduler
+   ```
+
+   Alternative without Redis (using SQLite):
+
+   ```sh
+   # Set environment variables to use SQLite instead of Redis
+   export CELERY_BROKER_URL=sqla+sqlite:///celery.sqlite
+   export CELERY_RESULT_BACKEND=db+sqlite:///results.sqlite
+
+   # In a separate terminal
+   cd dashboard_project
+   celery -A dashboard_project worker --loglevel=info
+
+   # Start the Celery Beat scheduler in another terminal with the same env vars
+   cd dashboard_project
+   celery -A dashboard_project beat --scheduler django_celery_beat.schedulers:DatabaseScheduler
+   ```
+
+9. Run the development server:
 
    ```sh
    python manage.py runserver
    ```
 
-8. Access the application at <http://127.0.0.1:8000/>
+10. Access the application at <http://127.0.0.1:8000/>
 
 ### Development Workflow with UV
 

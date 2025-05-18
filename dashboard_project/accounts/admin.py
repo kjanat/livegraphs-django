@@ -7,6 +7,7 @@ from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import Company, CustomUser
 
 
+@admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -63,15 +64,11 @@ class CustomUserAdmin(UserAdmin):
             obj.save()
 
 
+@admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ("name", "created_at", "get_employee_count")
     search_fields = ("name", "description")
 
+    @admin.display(description="Employees")
     def get_employee_count(self, obj):
         return obj.employees.count()
-
-    get_employee_count.short_description = "Employees"
-
-
-admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Company, CompanyAdmin)

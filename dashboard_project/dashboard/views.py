@@ -200,7 +200,12 @@ def chat_session_detail_view(request, session_id):
     # Check if this is an AJAX navigation request
     if is_ajax_navigation(request):
         html_content = render_to_string("dashboard/chat_session_detail.html", context, request=request)
-        return JsonResponse({"html": html_content, "title": f"Chat Session {session_id} | Chat Analytics"})
+        return JsonResponse(
+            {
+                "html": html_content,
+                "title": f"Chat Session {session_id} | Chat Analytics",
+            }
+        )
 
     return render(request, "dashboard/chat_session_detail.html", context)
 
@@ -277,7 +282,12 @@ def edit_dashboard_view(request, dashboard_id):
     # Check if this is an AJAX navigation request
     if is_ajax_navigation(request):
         html_content = render_to_string("dashboard/dashboard_form.html", context, request=request)
-        return JsonResponse({"html": html_content, "title": f"Edit Dashboard: {dashboard.name} | Chat Analytics"})
+        return JsonResponse(
+            {
+                "html": html_content,
+                "title": f"Edit Dashboard: {dashboard.name} | Chat Analytics",
+            }
+        )
 
     return render(request, "dashboard/dashboard_form.html", context)
 

@@ -1,0 +1,145 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+    "name": "Ubuntu",
+    // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+    "image": "mcr.microsoft.com/devcontainers/base:jammy",
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    "features": {
+        "ghcr.io/devcontainers-community/npm-features/prettier:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers-extra/features/gitmux:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers-extra/features/pre-commit:2": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers-extra/features/ruff:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers-extra/features/shfmt:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers-extra/features/tmux-apt-get:1": {},
+        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "installDirectlyFromGitHubRelease": true,
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/go:1": {},
+        "ghcr.io/devcontainers/features/node:1": {
+            "installYarnUsingApt": true,
+            "nodeGypDependencies": true,
+            "nvmVersion": "latest",
+            "pnpmVersion": "latest",
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/powershell:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/python:1": {
+            "enableShared": true,
+            "installJupyterlab": true,
+            "installTools": true,
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers/features/sshd:1": {
+            "version": "latest"
+        },
+        "ghcr.io/hspaans/devcontainer-features/django-upgrade:1": {
+            "version": "latest"
+        },
+        "ghcr.io/itsmechlark/features/redis-server:1": {
+            "version": "latest"
+        },
+        "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
+        "ghcr.io/warrenbuckley/codespace-features/sqlite:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "charliermarsh.ruff",
+                "esbenp.prettier-vscode",
+                "GitHub.copilot-chat",
+                "GitHub.copilot-workspace",
+                "ms-vscode.copilot-mermaid-diagram",
+                "ms-vscode.vscode-copilot-data-analysis",
+                "ms-vscode.vscode-copilot-vision",
+                "ms-vscode.vscode-websearchforcopilot",
+                "PyCQA.bandit-pycqa",
+                "tamasfe.even-better-toml",
+                "timonwong.shellcheck",
+                "trunk.io"
+            ],
+            "settings": {
+                "[css]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode",
+                    "editor.formatOnSave": true
+                },
+                "[html]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode",
+                    "editor.formatOnSave": true
+                },
+                "[javascript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode",
+                    "editor.formatOnSave": true
+                },
+                "[python]": {
+                    "editor.codeActionsOnSave": {
+                        "source.fixAll": "explicit",
+                        "source.organizeImports": "explicit"
+                    },
+                    "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.formatOnSave": true
+                },
+                "[toml]": {
+                    "editor.defaultFormatter": "tamasfe.even-better-toml"
+                },
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "editor.formatOnSave": true,
+                "emmet.includeLanguages": {
+                    "django-html": "html",
+                    "jinja-html": "html"
+                },
+                "emmet.syntaxProfiles": {
+                    "html": {
+                        "inline_break": 2
+                    }
+                },
+                "files.associations": {
+                    "*.html": "html"
+                },
+                "html.format.wrapAttributes": "auto",
+                "html.format.wrapLineLength": 100,
+                "notebook.codeActionsOnSave": {
+                    "notebook.source.fixAll": "explicit",
+                    "notebook.source.organizeImports": "explicit"
+                },
+                "notebook.formatOnSave.enabled": true,
+                "prettier.requireConfig": true,
+                "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+                "json.schemas": [
+                    {
+                        "fileMatch": ["*/devcontainer-feature.json"],
+                        "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainerFeature.schema.json"
+                    },
+                    {
+                        "fileMatch": ["*/devcontainer.json"],
+                        "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json"
+                    }
+                ]
+            }
+        }
+    },
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    "forwardPorts": [6379, 8001],
+    // Use 'postCreateCommand' to run commands after the container is created.
+    "postCreateCommand": "sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y; sudo apt install -y ruby-foreman; npm i -g prettier prettier-plugin-jinja-template; redis-server --daemonize yes; uname -a; export UV_LINK_MODE=copy; uv python install; uv pip install -Ur pyproject.toml"
+    // Configure tool-specific properties.
+    // "customizations": {},
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "root"
+}

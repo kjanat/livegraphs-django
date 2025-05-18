@@ -42,4 +42,6 @@ urlpatterns = [
     path("data-view/", views.data_view, name="data_view"),
     # Export to CSV
     path("export/csv/", views_export.export_chats_csv, name="export_chats_csv"),
+    # Export to JSON
+    path("export/json/", views_export.export_chats_json, name="export_chats_json"),
 ]
