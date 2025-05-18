@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import get_object_or_404, redirect
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from .models import ExternalDataSource
 from .tasks import periodic_fetch_chat_data, refresh_specific_source
@@ -36,7 +37,10 @@ def manual_data_refresh(request):
                 )
         except Exception as e:
             messages.error(request, f"Failed to refresh data: {e}")
-    return redirect(request.headers.get("referer", "dashboard"))  # Redirect to previous page or dashboard
+    referer = request.headers.get("referer", "")
+    if url_has_allowed_host_and_scheme(referer, allowed_hosts=None):
+        return redirect(referer)
+    return redirect("dashboard")  # Redirect to a safe default
 
 
 @staff_member_required
@@ -51,4 +55,7 @@ def refresh_specific_datasource(request, source_id):
     except Exception as e:
         messages.error(request, f"Failed to refresh data source {source.name}: {e}")
 
-    return redirect(request.headers.get("referer", "/admin/data_integration/externaldatasource/"))
+    referer = request.headers.get("referer", "")
+    if url_has_allowed_host_and_scheme(referer, allowed_hosts=None):
+        return redirect(referer)
+    return redirect("/admin/data_integration/externaldatasource/")  # Redirect to a safe default
