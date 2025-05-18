@@ -16,3 +16,6 @@ environment-checks = ["python", "dependencies"]
 
 # How to resolve dependencies not specified with exact versions
 dependency-resolution = "strict"
+
+# If the cache and target directories are on different filesystems, hardlinking may not be supported.
+link-mode = "copy"

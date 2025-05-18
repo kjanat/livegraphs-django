@@ -1,6 +1,35 @@
 {
     "devDependencies": {
+        "markdownlint-cli2": "^0.18.1",
         "prettier": "^3.5.3",
         "prettier-plugin-jinja-template": "^2.1.0"
+    },
+    "scripts": {
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "lint:md": "markdownlint-cli2 \"**/*.md\" \"!.trunk/**\" \"!.venv/**\" \"!node_modules/**\"",
+        "lint:md:fix": "markdownlint-cli2  --fix \"**/*.md\" \"!.trunk/**\" \"!.venv/**\" \"!node_modules/**\""
+    },
+    "markdownlint-cli2": {
+        "config": {
+            "MD007": {
+                "indent": 4,
+                "start_indented": false,
+                "start_indent": 4
+            },
+            "MD013": false,
+            "MD030": {
+                "ul_single": 3,
+                "ol_single": 2,
+                "ul_multi": 3,
+                "ol_multi": 2
+            },
+            "MD033": false
+        },
+        "ignores": [
+            "node_modules",
+            ".git",
+            "*.json"
+        ]
     }
 }

@@ -61,20 +61,64 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "bierner.github-markdown-preview",
+                "bierner.markdown-mermaid",
+                "bierner.markdown-preview-github-styles",
                 "charliermarsh.ruff",
+                "CS50.ddb50",
+                "DavidAnson.vscode-markdownlint",
                 "esbenp.prettier-vscode",
                 "GitHub.copilot-chat",
                 "GitHub.copilot-workspace",
+                "GitHub.remotehub",
+                "github.vscode-github-actions",
                 "ms-vscode.copilot-mermaid-diagram",
                 "ms-vscode.vscode-copilot-data-analysis",
                 "ms-vscode.vscode-copilot-vision",
+                "ms-vscode.vscode-github-issue-notebooks",
                 "ms-vscode.vscode-websearchforcopilot",
                 "PyCQA.bandit-pycqa",
+                "samuelcolvin.jinjahtml",
+                "shd101wyy.markdown-preview-enhanced",
                 "tamasfe.even-better-toml",
                 "timonwong.shellcheck",
-                "trunk.io"
+                "trunk.io",
+                "VisualStudioExptTeam.intellicode-api-usage-examples",
+                "yzhang.markdown-all-in-one"
             ],
             "settings": {
+                "github.copilot.chat.codeGeneration.instructions": [
+                    {
+                        "text": "This dev container includes an up-to-date version of Git, built from source as needed, pre-installed and available on the `PATH`."
+                    },
+                    {
+                        "text": "This dev container includes the Docker CLI (`docker`) pre-installed and available on the `PATH` for running and managing containers using a dedicated Docker daemon running inside the dev container."
+                    },
+                    {
+                        "text": "This dev container includes an up-to-date version of Git, built from source as needed, pre-installed and available on the `PATH`."
+                    },
+                    {
+                        "text": "This dev container includes Go and common Go utilities pre-installed and available on the `PATH`, along with the Go language extension for Go development."
+                    },
+                    {
+                        "text": "This dev container includes `node`, `npm` and `eslint` pre-installed and available on the `PATH` for Node.js and JavaScript development."
+                    },
+                    {
+                        "text": "This dev container includes `node`, `npm` and `eslint` pre-installed and available on the `PATH` for Node.js and JavaScript development."
+                    },
+                    {
+                        "text": "This dev container includes `python3` and `pip3` pre-installed and available on the `PATH`, along with the Python language extensions for Python development."
+                    },
+                    {
+                        "text": "This dev container includes an SSH server so that you can use an external terminal, sftp, or SSHFS to interact with it. The first time you've started the container, you will want to set a password for your user. With each connection to the container, you'll want to forward the SSH port to your local machine and use a local terminal or other tool to connect using the password you set."
+                    },
+                    {
+                        "text": "This dev container includes the GitHub CLI (`gh`), which is pre-installed and available on the `PATH`. IMPORTANT: `gh api -f` does not support object values, use multiple `-f` flags with hierarchical keys and string values instead. When using GitHub actions `actions/upload-artifact` or `actions/download-artifact` use v4 or later."
+                    },
+                    {
+                        "text": "This workspace is in a dev container running on \"Ubuntu 22.04.5 LTS\".\n\nUse `\"$BROWSER\" <url>` to open a webpage in the host's default browser.\n\nSome of the command line tools available on the `PATH`: `apt`, `dpkg`, `docker`, `git`, `gh`, `curl`, `wget`, `ssh`, `scp`, `rsync`, `gpg`, `ps`, `lsof`, `netstat`, `top`, `tree`, `find`, `grep`, `zip`, `unzip`, `tar`, `gzip`, `bzip2`, `xz`"
+                    }
+                ],
                 "[css]": {
                     "editor.defaultFormatter": "esbenp.prettier-vscode",
                     "editor.formatOnSave": true
@@ -85,6 +129,10 @@
                 },
                 "[javascript]": {
                     "editor.defaultFormatter": "esbenp.prettier-vscode",
+                    "editor.formatOnSave": true
+                },
+                "[markdown]": {
+                    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
                     "editor.formatOnSave": true
                 },
                 "[python]": {
@@ -130,14 +178,19 @@
                         "fileMatch": ["*/devcontainer.json"],
                         "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json"
                     }
-                ]
+                ],
+                "markdownlint.config": {
+                    "MD007": {
+                        "indent": 4
+                    }
+                }
             }
         }
     },
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     "forwardPorts": [6379, 8001],
     // Use 'postCreateCommand' to run commands after the container is created.
-    "postCreateCommand": "sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y; sudo apt install -y ruby-foreman; npm i -g prettier prettier-plugin-jinja-template; redis-server --daemonize yes; uname -a; export UV_LINK_MODE=copy; uv python install; uv pip install -Ur pyproject.toml"
+    "postCreateCommand": "bash .devcontainer/postCreateCommand.sh"
     // Configure tool-specific properties.
     // "customizations": {},
     // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

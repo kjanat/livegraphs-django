@@ -48,5 +48,9 @@ docker-compose.override.yml
 *.swp
 *.swo
 
-# Ignore all SQLite3 files:
-**/*.sqlite3
+# Ignore all SQLite files:
+*.sqlite3
+*.sqlite
+
+# Ignore markdown
+*.md

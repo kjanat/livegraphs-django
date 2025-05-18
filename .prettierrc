@@ -18,6 +18,15 @@
       "options": {
         "parser": "jinja-template"
       }
+    },
+    {
+      "files": ["*.md", "*.markdown"],
+      "options": {
+        "tabWidth": 2,
+        "useTabs": false,
+        "proseWrap": "preserve",
+        "printWidth": 100
+      }
     }
   ],
   "plugins": ["prettier-plugin-jinja-template"]

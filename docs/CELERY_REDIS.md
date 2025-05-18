@@ -6,10 +6,10 @@ This document explains how to set up and use Redis and Celery for background tas
 
 The data integration module uses Celery to handle:
 
-- Periodic data fetching from external APIs
-- Processing and storing CSV data
-- Downloading and parsing transcript files
-- Manual data refresh triggered by users
+-   Periodic data fetching from external APIs
+-   Processing and storing CSV data
+-   Downloading and parsing transcript files
+-   Manual data refresh triggered by users
 
 ## Installation
 
@@ -31,32 +31,33 @@ redis-cli ping  # Should output PONG
 
 After installation, check if Redis is properly configured:
 
-1. Open Redis configuration file:
+1.  Open Redis configuration file:
 
-   ```bash
-   sudo nano /etc/redis/redis.conf
-   ```
+    ```bash
+    sudo nano /etc/redis/redis.conf
+    ```
 
-2. Ensure the following settings:
+2.  Ensure the following settings:
 
-   ```bash
-   # For development (localhost only)
-   bind 127.0.0.1
+    ```bash
+    # For development (localhost only)
+    bind 127.0.0.1
 
-   # For production (accept connections from specific IP)
-   # bind 127.0.0.1 your.server.ip.address
+    # For production (accept connections from specific IP)
+    # bind 127.0.0.1 your.server.ip.address
 
-   # Protected mode (recommended)
-   protected-mode yes
+    # Protected mode (recommended)
+    protected-mode yes
 
-   # Port
-   port 6379
-   ```
+    # Port
+    port 6379
+    ```
 
-3. Restart Redis after any changes:
-   ```bash
-   sudo systemctl restart redis-server
-   ```
+3.  Restart Redis after any changes:
+
+    ```bash
+    sudo systemctl restart redis-server
+    ```
 
 #### macOS
 
@@ -79,7 +80,7 @@ If Redis is not available, the application will automatically fall back to using
 
 Set these environment variables in your `.env` file or deployment environment:
 
-```env
+```sh
 # Redis Configuration
 REDIS_HOST=localhost
 REDIS_PORT=6379
@@ -126,28 +127,29 @@ docker-compose up -d
 
 Development requires multiple terminal windows:
 
-1. **Django Development Server**:
+1.  **Django Development Server**:
 
-   ```bash
-   make run
-   ```
+    ```bash
+    make run
+    ```
 
-2. **Redis Server** (if needed):
+2.  **Redis Server** (if needed):
 
-   ```bash
-   make run-redis
-   ```
+    ```bash
+    make run-redis
+    ```
 
-3. **Celery Worker**:
+3.  **Celery Worker**:
 
-   ```bash
-   make celery
-   ```
+    ```bash
+    make celery
+    ```
 
-4. **Celery Beat** (for scheduled tasks):
-   ```bash
-   make celery-beat
-   ```
+4.  **Celery Beat** (for scheduled tasks):
+
+    ```bash
+    make celery-beat
+    ```
 
 Or use the combined command:
 
@@ -161,12 +163,12 @@ make run-all
 
 If you see connection errors:
 
-1. Check that Redis is running: `redis-cli ping` should return `PONG`
-2. Verify firewall settings are not blocking port 6379
-3. Check Redis binding in `/etc/redis/redis.conf` (should be `bind 127.0.0.1` for local dev)
+1.  Check that Redis is running: `redis-cli ping` should return `PONG`
+2.  Verify firewall settings are not blocking port 6379
+3.  Check Redis binding in `/etc/redis/redis.conf` (should be `bind 127.0.0.1` for local dev)
 
 ### Celery Workers Not Processing Tasks
 
-1. Ensure the worker is running with the correct app name: `celery -A dashboard_project worker`
-2. Check the Celery logs for errors
-3. Verify broker URL settings in both code and environment variables
+1.  Ensure the worker is running with the correct app name: `celery -A dashboard_project worker`
+2.  Check the Celery logs for errors
+3.  Verify broker URL settings in both code and environment variables

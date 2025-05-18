@@ -43,5 +43,12 @@
 		"notebook.source.organizeImports": "explicit"
 	},
 	"notebook.formatOnSave.enabled": true,
-	"prettier.requireConfig": true
+    "prettier.requireConfig": true,
+    "markdownlint.config": {
+        "default": true,
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+        "editor.formatOnSave": true
+    }
 }
