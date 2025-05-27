@@ -302,9 +302,9 @@ platformdirs==4.3.8 \
     # via
     #   black
     #   virtualenv
-plotly==6.1.0 \
-    --hash=sha256:a29d3ed523c9d7960095693af1ee52689830df0f9c6bae3e5e92c20c4f5684c3 \
-    --hash=sha256:f13f497ccc2d97f06f771a30b27fab0cbd220f2975865f4ecbc75057135521de
+plotly==6.1.1 \
+    --hash=sha256:84a4f3d36655f1328fa3155377c7e8a9533196697d5b79a4bc5e905bdd09a433 \
+    --hash=sha256:9cca7167406ebf7ff541422738402159ec3621a608ff7b3e2f025573a1c76225
     # via livegraphsdjango
 pluggy==1.6.0 \
     --hash=sha256:7dcc130b76258d33b90f61b658791dede3486c3e6bfb003ee5c9bfb396dd22f3 \
