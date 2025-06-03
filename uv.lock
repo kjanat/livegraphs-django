@@ -282,13 +282,13 @@ wheels = [
 
 [[package]]
 name = "django-allauth"
-version = "65.8.0"
+version = "65.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "django" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/09/50/4fa3a907be1a49f5ad3b7cd67944d4b91186ef6743fe0fd401c160ba6341/django_allauth-65.8.0.tar.gz", hash = "sha256:9da589d99d412740629333a01865a90c95c97e0fae0cde789aa45a8fda90e83b", size = 1679978, upload-time = "2025-05-08T19:31:27.975Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9d/a3/00aa9d5bb5df4f7464495675074dc11107c08b3eea3462fb3edc059d71e1/django_allauth-65.9.0.tar.gz", hash = "sha256:a06bca9974df44321e94c33bcf770bb6f924d1a44b57defbce4d7ec54a55483e", size = 1710514, upload-time = "2025-06-01T19:21:07.771Z" }
 
 [[package]]
 name = "django-celery-beat"

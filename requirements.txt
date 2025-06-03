@@ -137,8 +137,8 @@ django==5.2.1 \
     #   django-stubs-ext
     #   django-timezone-field
     #   livegraphsdjango
-django-allauth==65.8.0 \
-    --hash=sha256:9da589d99d412740629333a01865a90c95c97e0fae0cde789aa45a8fda90e83b
+django-allauth==65.9.0 \
+    --hash=sha256:a06bca9974df44321e94c33bcf770bb6f924d1a44b57defbce4d7ec54a55483e
     # via livegraphsdjango
 django-celery-beat==2.8.1 \
     --hash=sha256:da2b1c6939495c05a551717509d6e3b79444e114a027f7b77bf3727c2a39d171 \
