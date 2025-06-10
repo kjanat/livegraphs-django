@@ -49,7 +49,7 @@
         "ghcr.io/devcontainers/features/sshd:1": {
             "version": "latest"
         },
-        "ghcr.io/hspaans/devcontainer-features/django-upgrade:1": {
+        "ghcr.io/hspaans/devcontainer-features/django-upgrade:2": {
             "version": "latest"
         },
         "ghcr.io/itsmechlark/features/redis-server:1": {
