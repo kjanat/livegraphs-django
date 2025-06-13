@@ -13,6 +13,14 @@ updates:
       day: "tuesday"
       time: "03:00"
       timezone: "Europe/Amsterdam"
+    labels:
+      - "dependencies"
+      - "devcontainers"
+    groups:
+      devcontainers:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 10
   - package-ecosystem: "uv"
     directory: "/"
     schedule:
@@ -20,3 +28,26 @@ updates:
       day: "tuesday"
       time: "03:00"
       timezone: "Europe/Amsterdam"
+    labels:
+      - "dependencies"
+      - "uv/pip"
+    groups:
+      uv:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "03:00"
+      timezone: "Europe/Amsterdam"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      actions:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 10
